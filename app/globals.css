@@ -1,0 +1,3232 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Fulfill Nest — "Modern Editorial Warmth" Visual System
+   Tailwind CSS v4 — CSS-first configuration (no tailwind.config.js)
+   ============================================================ */
+
+@theme {
+  /* ------------------------------------------------------------------
+     1. COLOR — 60% soft neutral base · 30% deep slate · 10% warm accent
+     ------------------------------------------------------------------ */
+  /* Interior-page rhythm: one warm hero canvas, two quiet light surfaces,
+     and a single deep-forest statement colour shared across the site. */
+  --color-mist: #faf8f3; /* light clean surface — page background   */
+  --color-warm-grey: #f7f4eb; /* warm alternate surface               */
+  --color-canvas: #f7f4eb; /* exact homepage / child-hero canvas    */
+  --color-bg-canvas: #fbf9f5; /* light pre-footer conversion canvas   */
+  --color-surface: #ffffff; /* primary clean content surface         */
+  --color-surface-muted: #faf8f3; /* secondary clean content surface    */
+  --color-linen: #f1eee7; /* emphasis surfaces, hover                */
+  --color-bg-hover: #f5f1ea; /* shared editorial row/card hover fill */
+  --color-sand: rgb(28 25 23 / 0.08); /* shared hairline divider       */
+  --color-section-divider: rgb(28 25 23 / 0.08);
+  --color-stone: #8f8980; /* placeholder / low-emphasis metadata      */
+  /* Body copy. The token is still called `taupe` from the original warm
+     palette, but the value is now the slate grey the type spec calls for —
+     7.19:1 on the cream canvas, up from 4.74:1 for the old #746f68. Kept as a
+     hex literal rather than a var() alias so Tailwind can still resolve
+     opacity modifiers. */
+  --color-taupe: #4b5563; /* body copy and descriptions                */
+  --color-walnut: #4e4a43; /* secondary text                         */
+
+  /* Eyebrow / small accent label on LIGHT surfaces.
+     Cannot be called `--color-eyebrow`: that would collide with the
+     `--text-eyebrow` size token and both would resolve to the `text-eyebrow`
+     utility, silently dropping the 14px/0.08em/700 treatment at every call
+     site. Dark surfaces (bg-forest, bg-ink) must NOT use this — it measures
+     2.47:1 on forest — they keep a light accent instead.
+     Value is #6b7280 darkened a uniform 5% to #666c7a. The specified #6b7280
+     only reaches 4.5:1 on white/mist/bg-canvas; on --color-canvas and
+     --color-linen it falls to 4.40:1 and 4.17:1, and a 14px bold eyebrow is
+     normal text, not large text, so 4.5:1 is the bar. At 95% scale the worst
+     light surface is 4.54:1 and the shift is not perceptible. */
+  --color-eyebrow-gray: #666c7a;
+
+  --color-forest: #36433b; /* deep statement / CTA surface           */
+  --color-forest-deep: #29352e;
+  --color-forest-soft: #e7ede8;
+  --color-warm-white: #f7f4eb;
+
+  --color-charcoal: #111827; /* headings — 16.87:1 on cream            */
+  --color-ink: #232326; /* darkest surfaces                       */
+  --color-charcoal-80: #4b4b50;
+  --color-charcoal-60: #717177;
+
+  --color-accent-50: #fbf1eb;
+  --color-accent-100: #f5e4db; /* tint wash, badges, focus rings       */
+  --color-accent-500: #ce7c5d;
+  --color-accent-600: #c46a4a; /* primary accent, key CTA             */
+  --color-accent-700: #a95538; /* hover                               */
+  --color-copper: #c2410c; /* burnt copper — vector glow accents    */
+  --color-brick-red: #a83b24; /* primary CTA deep stop / stat hover  */
+
+  /* Brand primary — the single "this is the accent" colour, used for header
+     nav link states and active indicators. Same value as --color-brick-red,
+     declared separately rather than as a `var()` alias on purpose: `--color-*`
+     tokens feed Tailwind's opacity modifiers (`border-brick-red/40` is live in
+     FaqAccordion), and Tailwind can only compute those from a literal colour.
+     Value chosen over the common #C84B31 because nav text is 14px, which is
+     normal-size text needing 4.5:1 — #C84B31 gives 4.66:1 on the white nav
+     pill but only 4.39:1 on the submenu's --color-mist and 4.24:1 on
+     --color-canvas, so it would put active and hover labels below AA. */
+  --color-brand-primary: #a83b24;
+
+  /* Dark-surface variant of the brand primary, for accent words sitting on
+     `bg-forest`. #a83b24 itself is 1.64:1 on #36433b — effectively invisible —
+     so the three dark sections cannot use the base token. This is the same
+     brick hue mixed 55% toward white, landing at 4.91:1 (AA) on forest, so the
+     accent still reads as the brand colour rather than a different one.
+     Measured, not eyeballed: 35% -> 3.33:1, 50% -> 4.47:1, 55% -> 4.91:1. */
+  --color-brand-primary-tint: #d8a79c;
+
+  /* Brand primary as it actually reads on the deep charcoal canvas
+     (--color-charcoal, #111827 — the same value as Tailwind's `gray-900`).
+     Neither dark-surface step above survives the move onto this canvas, which
+     is why the token exists rather than a call site just reaching for a
+     literal:
+       #a83b24  2.80:1  below even the 3:1 large-text bar — reads as a stain
+       #d8a79c  8.39:1  plenty of contrast, but it is 55% mixed toward white,
+                          so it reads as a washed-out pink rather than as red
+     #c84b31 measures 3.81:1, which clears AA for large text — headings, icons
+     and display numerals — while still unmistakably the brand red. This is a
+     LARGE-text colour only: at 14px or below it is under the 4.5:1 bar, so
+     small copy on charcoal stays white or gray-300. */
+  --color-brand-primary-canvas: #c84b31;
+
+  /* Guarantees sits on `bg-slate-900` (#0F172A), which needs no token — it is
+     stock Tailwind. It was previously a custom `--color-indigo-canvas`
+     (#1E1B4B), declared here only because that hue was NOT a stock value; it is
+     gone now that the canvas is back on the standard ramp. The measurements
+     that justified the accent live in sections/GuaranteesGrid.tsx, and all of
+     them IMPROVE on slate-900:
+       #c84b31   3.83:1  (3.43:1 on #1e1b4b, 3.81:1 on #111827)
+       #d4d4d4  12.05:1  gray-300 body copy
+       #ffffff  17.85:1  white headings
+     The lesson from that canvas is kept because it is not specific to a hue: on
+     a dark canvas a surface is lifted with WHITE, never with a dark overlay.
+     `bg-gray-900/50` over #1E1B4B resolved to #171939, DARKER than the
+     background behind it, so cards read as holes punched in the section rather
+     than as panels sitting on it. */
+
+  /* Brand green — rich sage/emerald from the logo. Key SECONDARY accent:
+     trust indicators, success metrics, micro-badges, micro-interaction
+     hovers, active tab indicators and ambient hero glows. Design-system
+     equivalent of colors.brand.green (50 → 950). The full ramp keeps each
+     original hue while increasing HSL saturation by 20% and lowering
+     lightness by 10%, making trust accents more pronounced site-wide. */
+  --color-brand-green-50: #d0e6d7;
+  --color-brand-green-100: #bcddc9;
+  --color-brand-green-200: #9fccb3;
+  --color-brand-green-300: #78b495;
+  --color-brand-green-400: #539272;
+  --color-brand-green-500: #3a785a;
+  --color-brand-green-600: #316849; /* core brand green                */
+  --color-brand-green-700: #25553d; /* deep sage — AA text on cream     */
+  --color-brand-green-800: #204531;
+  --color-brand-green-900: #193a29;
+  --color-brand-green-950: #0d2418; /* deepest tint — ambient glows     */
+
+  --color-gold-100: #f7ebc9; /* celebration tint                     */
+  --color-gold-500: #d9a441; /* celebration accent (≤3% of screen)   */
+
+  --color-darktext: #f7f4eb; /* warm white on deep forest surfaces   */
+  --color-dark-line: rgb(247 244 235 / 0.14); /* hairline on dark     */
+
+  --color-success: var(--color-brand-green-700); /* inherits deep sage */
+  --color-info: #5c7285;
+  --color-warning: #c9962d;
+  --color-error: #b4553f;
+
+  /* Gradients & glow surfaces (Tailwind v4: --background-image-*) */
+  --background-image-accent-gradient: linear-gradient(
+    135deg,
+    #c46a4a 0%,
+    #d9a441 100%
+  );
+  --background-image-hero-glow: radial-gradient(
+    ellipse 70% 55% at 50% 0%,
+    rgb(196 106 74 / 0.07),
+    transparent 65%
+  );
+  --background-image-cta-glow: radial-gradient(
+    ellipse 120% 90% at 50% 120%,
+    rgb(217 164 65 / 0.16),
+    transparent 60%
+  );
+  --background-image-green-glow: radial-gradient(
+    ellipse 70% 55% at 50% 0%,
+    color-mix(in srgb, var(--color-brand-green-700) 7%, transparent),
+    transparent 65%
+  );
+
+  /* ------------------------------------------------------------------
+     Seamless hero canvas — shared by the home hero and every interior
+     hero so the top viewport always resolves to ONE colour field.
+
+     The hero's ambient layer used to be clipped by its own section box.
+     Because the floating navigation reserves its footprint with a spacer
+     immediately above the hero, that clip landed exactly on the header's
+     mid-line and painted a hard 1px colour step across the top viewport —
+     worst on the right, where the sage crown was strongest, so the sage
+     green visibly "met" the white canvas in a crisp line.
+
+     `hero-canvas-wash` is the continuous surface. It opens and closes on
+     the exact warm hero canvas (#F7F4EB) and holds it flat through the
+     whole header band, so the hero and the canvas behind the floating
+     pill are indistinguishable; the warm/sage plate then arrives on a
+     long, soft multi-stop ramp and eases back to canvas before the
+     section ends. Adjacent stops are never closer than 18%, so there is
+     no crisp demarcation anywhere along the axis.
+
+     `hero-canvas-sage` is the soft daylight bloom. It is a true circle (an
+     ellipse would make CSS interpolate along a straight ray and clamp the
+     whole region "behind" the centre to the peak stop, which paints a flat
+     plateau instead of a falloff). Its top arc is tangent to y=60px and it
+     is fully transparent by its own radius, so the header band gets zero
+     alpha from it and neither overflow boundary can cut a visible edge. The
+     centre sits at an absolute length rather than a percentage so the bloom
+     lands in the same place on heroes of wildly different heights.
+     ------------------------------------------------------------------ */
+  --background-image-hero-canvas-wash: linear-gradient(
+    to bottom,
+    #f7f4eb 0%,
+    #f7f4eb 16%,
+    #f8f6ef 38%,
+    #f4f5ed 58%,
+    #f1f2e9 74%,
+    #f5f3ea 86%,
+    #f7f4eb 94%,
+    #f7f4eb 100%
+  );
+  --background-image-hero-canvas-sage: radial-gradient(
+    31.25rem at 86% 37.25rem,
+    rgb(25 58 41 / 0.055) 0%,
+    rgb(25 58 41 / 0.03) 55%,
+    rgb(25 58 41 / 0.014) 75%,
+    rgb(25 58 41 / 0.005) 90%,
+    transparent 100%
+  );
+
+  /* ------------------------------------------------------------------
+     2. TYPOGRAPHY — Plus Jakarta Sans (display) · Inter (sans) · Space Grotesk
+     Font families are injected by next/font/google (see app/layout.tsx)
+     ------------------------------------------------------------------ */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  /* Heading face. Inter is kept as the second entry so a heading that fails to
+     load Jakarta still lands on a real grotesk with matching metrics rather
+     than a system fallback. */
+  --font-display: var(--font-plus-jakarta-sans), "Plus Jakarta Sans",
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-grotesk: var(--font-space-grotesk), "Space Grotesk", ui-sans-serif,
+    system-ui, sans-serif;
+
+  /* Type scale — editorial clamp() rhythm
+     Headings share one treatment: 1.15 leading and -0.035em tracking, which is
+     tight enough to read as a single graphic block at display sizes. The
+     per-step line-heights are deliberately identical, so a page mixing
+     text-display and text-h3 keeps one vertical rhythm. */
+  /* Display floors were lowered for the mobile pass. These are the two hero H1
+     tokens, and at the old 44px/36px floors a 320px viewport got a 44px
+     headline — roughly seven characters per line, which wraps the H1s into a
+     ragged block and forces the sub-copy below the fold. The ceilings are
+     untouched, so desktop and 4K render exactly as before; only the small end
+     of each clamp moves. 36px is the spec'd mobile H1. */
+  --text-display-xl: clamp(2.25rem, 5.5vw, 4rem); /* 36 → 64px */
+  --text-display-xl--line-height: 1.15;
+  --text-display-xl--letter-spacing: -0.035em;
+
+  --text-display: clamp(1.75rem, 4.2vw, 3rem); /* 28 → 48px */
+  --text-display--line-height: 1.15;
+  --text-display--letter-spacing: -0.035em;
+
+  --text-h1: clamp(2rem, 3.6vw, 2.5rem); /* 32 → 40px */
+  --text-h1--line-height: 1.15;
+  --text-h1--letter-spacing: -0.035em;
+
+  /* Was a flat 2rem, i.e. the same 32px on a 320px phone as on a 1440px
+     desktop. Now a clamp so it scales like every other heading. */
+  --text-h2: clamp(1.5rem, 4vw, 2rem); /* 24 → 32px */
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.035em;
+
+  --text-h3: 1.5rem; /* 24px */
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.035em;
+
+  --text-h4: 1.25rem; /* 20px */
+  --text-h4--line-height: 1.15;
+  --text-h4--letter-spacing: -0.035em;
+
+  /* Body copy. Inter at 1.6 is a touch looser than the old 1.625/1.75 ramp but
+     tighter than a 1.75 measure, which at 18px left paragraphs visibly airy. */
+  --text-body-lg: 1.125rem; /* 18px */
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--letter-spacing: -0.01em;
+
+  --text-body: 1rem; /* 16px */
+  --text-body--line-height: 1.6;
+  --text-body--letter-spacing: -0.01em;
+
+  --text-body-sm: 0.875rem; /* 14px */
+  --text-body-sm--line-height: 1.6;
+  --text-body-sm--letter-spacing: -0.01em;
+
+  --text-caption: 0.75rem; /* 12px */
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0.08em;
+  --text-caption--font-weight: 500;
+
+  /* Eyebrow / small accent label. Always paired with `uppercase` at the call
+     site, and with an explicit colour — see --color-eyebrow-gray for why the
+     colour is not folded in here. */
+  --text-eyebrow: 0.875rem; /* 14px */
+  --text-eyebrow--line-height: 1.33;
+  --text-eyebrow--letter-spacing: 0.08em;
+  --text-eyebrow--font-weight: 700;
+
+  --text-stat: 2.5rem; /* 40px */
+  --text-stat--line-height: 1.1;
+  --text-stat--letter-spacing: -0.02em;
+
+  /* ------------------------------------------------------------------
+     3. SPACING & RADII — 4px base (8px rhythm), quiet corners
+     ------------------------------------------------------------------ */
+  --spacing: 0.25rem; /* enables the full 4/8/12/…/160 scale */
+  --spacing-section: clamp(5rem, 8vw, 6rem);
+
+  --radius-card: 1.25rem; /* 20px — shared editorial card radius   */
+  --radius-panel: 1.5rem; /* 24px — hero / feature surfaces         */
+  --radius-image: 1rem;
+  --radius-pill: 999px;
+
+  /* ------------------------------------------------------------------
+     4. ELEVATION — hairline + resting/hover/modal shadows
+     ------------------------------------------------------------------ */
+  --shadow-elev-1: 0 2px 6px rgb(46 46 50 / 0.05);
+  --shadow-elev-2: 0 6px 20px rgb(46 46 50 / 0.09);
+  --shadow-elev-3: 0 16px 48px rgb(46 46 50 / 0.18);
+  --shadow-card-hover: 0 10px 28px rgb(46 46 50 / 0.12);
+
+  /* ------------------------------------------------------------------
+     5. MOTION — premium easing, durations, keyframes
+     ------------------------------------------------------------------ */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-fountain: cubic-bezier(0.22, 1.18, 0.36, 1);
+  /* `--ease-fountain` played backwards in time, so the return leg retraces the
+     entrance's overshoot as an undershoot. The time-reverse of a cubic-bezier
+     is (1-x2, 1-y2, 1-x1, 1-y1): 0.22→0.64, 1.18→-0.18, 0.36→0.78, 1→0.
+     Using `--ease-fountain` itself here would be wrong even though it "matches
+     the entrance": it is an ease-out, so the cutouts would lunge most of the
+     way back to the headline centre in the first 3% of the exit and arrive over
+     the letters while still opaque. Reversed, the cutouts hold their burst
+     position through the first third of the exit and only then close, which is
+     what lets the opacity leg finish first — see the exit rule below. */
+  --ease-fountain-return: cubic-bezier(0.64, -0.18, 0.78, 1);
+
+  --animate-fade-up: fade-up 0.6s var(--ease-premium) both;
+  --animate-fade-in: fade-in 0.5s ease-out both;
+  --animate-rise: rise 0.8s var(--ease-premium) both;
+  --animate-ribbon-draw: ribbon-draw 1.4s var(--ease-premium) 0.2s both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee: marquee 55s linear infinite;
+
+  /* Product showcase slider. Shares the `marquee` keyframe (right-to-left) but
+     is a separate token so the strip's pace can be tuned without touching the
+     logo strip. 55s: the 14,688px track crosses a 1,920px viewport in about
+     13.6s, which reads as a slow, steady glide. */
+  --animate-showcase-marquee: marquee 55s linear infinite;
+  /* HRIS & ops integration marquee - two rows, one shared keyframe pair,
+     opposite directions. `--animate-hris-marquee` is the EXISTING `marquee`
+     keyframe (right-to-left); `--animate-hris-marquee-reverse` is its mirror,
+     added alongside `marquee` below. Separate tokens rather than reusing the
+     showcase pair so this band's pace can be tuned without touching the product
+     strip or the hero logo strip.
+
+     34s, and the number is derived rather than guessed. Row 1 is 4 repeats of 7
+     pills at ~154px each including the trailing gutter, so one half of its
+     track is ~4,300px and it moves at ~127px/s - the same pace as the showcase
+     strip (~124px/s), so all three marquees on the home page read as one motion
+     system. Row 2 is given the same 34s even though its half is ~3,700px
+     (~109px/s), and that is deliberately NOT speed-matched to its own width:
+     two rows sharing one band that visibly travelled at different speeds would
+     look broken, and a 15% gap sits far below the threshold where anyone reads
+     it as a mismatch. */
+  --animate-hris-marquee: marquee 34s linear infinite;
+  --animate-hris-marquee-reverse: marquee-reverse 34s linear infinite;
+
+  /* Testimonials vertical marquee (3 columns, alternating direction).
+     Three separate tokens rather than one duration plus a per-column override,
+     because the differing paces ARE the effect and each column's speed should
+     be tunable on its own. 45s / 40s / 50s over a column of roughly 1,900px
+     works out to about 42 / 47 / 38 px per second: close enough to feel
+     related, far enough apart that the three columns never lock into a
+     synchronised wave. */
+  --animate-testimonials-down: testimonials-scroll-down 45s linear infinite;
+  --animate-testimonials-up: testimonials-scroll-up 40s linear infinite;
+  --animate-testimonials-down-slow: testimonials-scroll-down 50s linear infinite;
+
+  /* The mobile deck's THREE HORIZONTAL ROWS, below 768px only. Same reasoning
+     as the three columns above — alternating direction and three different
+     durations, so the band never reads as one rigid conveyor — and the same
+     arithmetic. One row-copy is five 260px cards, four 1rem gutters and the
+     1rem seam padding, which is 1,380px, so 38 / 46 / 54s works out to roughly
+     36 / 30 / 26 px per second.
+
+     Those are slower than the vertical deck's ~42 / 47 / 38 and deliberately so:
+     a horizontal line of text has to be caught at a point you choose rather than
+     at a point that arrives, and on a phone the card is most of the viewport
+     width, so a faster pass would be a card nobody can finish reading. */
+  --animate-testimonials-right: testimonials-scroll-right 38s linear infinite;
+  --animate-testimonials-left: testimonials-scroll-left 46s linear infinite;
+  --animate-testimonials-right-slow: testimonials-scroll-right 54s linear infinite;
+
+  --animate-tumble-left: tumble-left 0.8s var(--ease-premium) both;
+  --animate-tumble-right: tumble-right 0.8s var(--ease-premium) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes ribbon-draw {
+    from {
+      stroke-dashoffset: 320;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }  /* Mirror of `marquee` for the second integration row: the same 0 -> -50%
+     sweep over the same two-copy track, run backwards, so the two rows drift
+     past each other instead of reading as one sentence looping twice.
+
+     A duplicate of the keyframe rather than `animation-direction: reverse` on
+     the shared one. `reverse` is a perfectly valid way to do this and is one
+     word shorter; the copy wins because the two rows then read side by side in
+     the stylesheet, and because the 2-copy track contract both of them depend
+     on is visible in one place instead of implied by a modifier. */
+  @keyframes marquee-reverse {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  /* Halo around the Fulfill Nest Core Engine. `scale` + `opacity` only.
+
+     The 70% keyframe is where the ring reaches full size, and holding it there
+     to 100% means the ring spends its last 30% of the cycle invisible at rest
+     scale - so the two rings (this one and a copy delayed by half a cycle)
+     always have at least one mid-flight, and the effect never blinks dark.
+
+     Only `transform` and `opacity` are animated, both of which are compositor-
+     only properties, so this costs no layout or paint on a long-running loop. */
+  @keyframes flow-core-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+
+    70% {
+      transform: scale(1.12);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1.12);
+      opacity: 0;
+    }
+  }
+
+  /* Particle travel along the connectors.
+
+     The whole trick is that the dash PERIOD and the dash TRAVEL are the same
+     number. `stroke-dasharray: 7 93` is a 100-unit period, and the keyframe
+     moves `stroke-dashoffset` by exactly -100 - one full period. A -100 shift
+     lands the pattern back on itself, so the loop is seamless no matter how
+     long the path actually is, and no matter which of the horizontal (135px)
+     and vertical (112px) curves it is drawn on. Change one of those numbers
+     without the other and the particles visibly jump at the end of every
+     cycle, which is why both live in this one file. */
+  @keyframes flow-dash {
+    from {
+      stroke-dashoffset: 0;
+    }
+
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  /* Vertical marquee for the testimonials deck.
+
+     `translateY(-50%)` on a track holding exactly two identical copies crosses
+     precisely one copy height, which is what makes the wrap invisible. That is
+     only true because the 1.5rem gutter lives INSIDE each copy wrapper
+     (`.testimonials-marquee-copy`) and the track itself carries no gap: a
+     track-level gap would make the track 2x-copy + 1 gap tall, so -50% would
+     land half a gap off and every single pass would jolt.
+
+     The two directions are one keyframe with the endpoints swapped rather than
+     a separate upward transform, so both share a single easing curve. */
+  @keyframes testimonials-scroll-down {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, -50%, 0);
+    }
+  }
+  @keyframes testimonials-scroll-up {
+    from {
+      transform: translate3d(0, -50%, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* Horizontal pair for the mobile deck. The vertical pair above is transposed
+     and nothing else: `translateX(-50%)` on a track holding exactly two
+     identical copies crosses precisely one copy width, and both directions are
+     one keyframe with the endpoints swapped so they share a single easing.
+
+     The invariant that makes -50% land on the seam is the one the vertical
+     pair documents, and it is why the row gutter lives inside
+     `.testimonials-marquee-row-copy` and the track carries none: a track-level
+     gap would make the track 2x-copy + 1 gap wide, -50% would land one gutter
+     short, and every pass would jolt. The row copy additionally carries 1rem of
+     trailing padding, which closes the junction BETWEEN the two copies with
+     exactly one gutter — the vertical pair has no such padding and its seam is
+     gutter-less, which is invisible at 24px and would not be at a seam that is
+     moving horizontally. */
+  @keyframes testimonials-scroll-right {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+  @keyframes testimonials-scroll-left {
+    from {
+      transform: translate3d(-50%, 0, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes tumble-left {
+    0% {
+      opacity: 0;
+      transform: translateX(-56px) rotate(-14deg);
+    }
+    55% {
+      opacity: 1;
+      transform: translateX(8px) rotate(5deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+    }
+  }
+  @keyframes tumble-right {
+    0% {
+      opacity: 0;
+      transform: translateX(56px) rotate(14deg);
+    }
+    55% {
+      opacity: 1;
+      transform: translateX(-8px) rotate(-5deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+    }
+  }
+
+  /* Warm gift-first estimator + hero accents — content lines sliding in,
+     ambient badges/ribbons drifting, and a gentle sway for floating
+     ribbon-bow vectors. */
+  --animate-line-item: line-item 0.55s var(--ease-premium) both;
+  --animate-drift: drift 9s ease-in-out infinite;
+  --animate-sway: sway 8s ease-in-out infinite;
+
+  @keyframes line-item {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateY(0) rotate(var(--tilt, 0deg));
+    }
+    50% {
+      transform: translateY(-10px) rotate(var(--tilt, 0deg));
+    }
+  }
+  @keyframes sway {
+    0%,
+    100% {
+      transform: rotate(var(--sway-from, -4deg)) translateY(0);
+    }
+    50% {
+      transform: rotate(var(--sway-to, 4deg)) translateY(-8px);
+    }
+  }
+
+  /* Ambient CTA glow — REMOVED.
+     Was `--animate-glow-pulse` + `@keyframes glow-pulse`, a 7s infinite
+     opacity/scale pulse. Its only consumer was the ambient glow ring behind
+     the pricing calculator's SVG gift box, which no longer exists, and an
+     infinitely pulsing backdrop is exactly the kind of permanent ambient
+     motion this project otherwise keeps out. Nothing referenced it. */
+
+  /* Scroll-hint bob — a gentle downward ease for the "jump to estimator"
+     arrow in the Pricing hero CTA (paired with html scroll-behavior:smooth) */
+  --animate-hint-bob: hint-bob 2.6s ease-in-out infinite;
+
+  @keyframes hint-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(4px);
+      opacity: 1;
+    }
+  }
+
+  /* Industries hero — rhythm wheel / sector graphic */
+  --animate-ring-pulse: ring-pulse 3.6s ease-out infinite; /* hub echo rings */
+  --animate-node-ping: node-ping 2.8s ease-out infinite; /* active node halo */
+  --animate-travel-pulse: travel-pulse 3.2s linear infinite; /* pulse along line */
+  --animate-ticker-fade: ticker-fade 0.45s var(--ease-premium) both;
+  --animate-constellation-spin: constellation-spin 60s linear infinite;
+  --animate-node-counter: node-counter 60s linear infinite;
+
+  @keyframes ring-pulse {
+    0% {
+      transform: scale(0.55);
+      opacity: 0.5;
+    }
+    70% {
+      transform: scale(2);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  @keyframes node-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.45;
+    }
+    70% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+
+  @keyframes travel-pulse {
+    0% {
+      offset-distance: 0%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* Rigid constellation orbit — the dashed guide ring, connection lines and
+     nodes rotate together as one GPU-composited layer (transform-only +
+     will-change: transform, so it glides at 60fps without layout work). */
+  @keyframes constellation-spin {
+    from {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    to {
+      transform: translate3d(0, 0, 0) rotate(360deg);
+    }
+  }
+
+  /* Per-node counter-rotation (identical duration/timing to the spin above).
+     Applied around each node's core, it cancels the constellation rotation so
+     labels stay upright and readable at every angle. */
+  @keyframes node-counter {
+    from {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    to {
+      transform: translate3d(0, 0, 0) rotate(-360deg);
+    }
+  }
+
+  @keyframes ticker-fade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Initial page-load choreography for the home hero. The base opacity keeps
+   delayed items hidden before their keyframe begins; `forwards` then retains
+   the final interactive state once each entrance finishes. */
+@keyframes hero-entrance-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pausing on hover keeps the wordmarks readable instead of letting a fast
+   loop compete with the hero copy. */
+.client-logo-marquee:hover .client-logo-track {
+  animation-play-state: paused;
+}
+
+/* Same courtesy for the product showcase: hovering anywhere over the band —
+   the cards, the gaps between them, or the padding — holds the strip still so
+   a product can be looked at, and it resumes the instant the pointer leaves.
+   Unlayered so it beats the `animate-showcase-marquee` utility's shorthand.
+
+   Gated on `(hover: hover)` because of a touch-specific failure: on iOS and
+   Android a tap sets :hover on the tapped element and it stays latched until
+   something else is tapped. Ungated, the first finger-touch on the strip
+   freezes it permanently and the user has no way to tell it is paused.
+   Devices that genuinely hover keep the pause; touch devices never latch. */
+@media (hover: hover) {
+  .showcase-marquee:hover .showcase-marquee-track,
+  .showcase-marquee:focus-within .showcase-marquee-track {
+    animation-play-state: paused;
+  }
+}
+/* ==================================================================
+   HRIS & ops integration marquee
+   ==================================================================
+
+   Four nested boxes, and every one of them is load-bearing for the loop
+   being seamless:
+
+     .hris-marquee           the band. `overflow: hidden` clips the track to
+                             the section, and the mask fades both edges so
+                             pills dissolve in and out rather than being
+                             guillotined at the viewport edge.
+     .hris-marquee-track     the only moving element. It holds exactly TWO
+                             identical sibling copies, so `translateX(-50%)`
+                             always lands precisely on the copy boundary -
+                             that is the entire trick.
+     .hris-marquee-copy      ONE half of the track. Carries NO gap and NO
+                             trailing padding: that spacing lives on the
+                             pills themselves, so the track is geometrically
+                             exactly 2 x one copy in every browser and the
+                             -50% seam cannot drift.
+     .hris-marquee-run       one pass of the brands, repeated four times per
+                             copy. Four, not two, because a half has to be
+                             WIDER THAN THE VIEWPORT or the window runs off
+                             the end of copy 2 before the keyframe resets and
+                             exposes a blank gap followed by a pop-in. One half
+                             measures ~4,300px (row 1) and ~3,700px (row 2)
+                             against a 1,920px reference viewport, which is
+                             the same reasoning and the same 4x figure as
+                             `.client-logo-marquee` in the hero.
+
+   `will-change: transform` promotes the track to its own compositor so the
+   sweep never touches layout or paint. The pills are plain spans - no images -
+   so the whole band is text and two box-shadows. */
+.hris-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 9%,
+    #000 91%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 9%,
+    #000 91%,
+    transparent
+  );
+}
+
+.hris-marquee-track {
+  will-change: transform;
+}.hris-marquee-track {
+  will-change: transform;
+}
+
+/* ==================================================================
+   Automation flow diagram
+   ==================================================================
+
+   The connector is three paths per orientation: a faint base stroke so the
+   connection is legible even when no particle is in that stretch, then two
+   particle layers at different dash periods, widths and speeds. Two layers
+   rather than one because a single layer reads as a dotted line, while two
+   out-of-phase layers read as things passing each other.
+
+   The delays are NEGATIVE, which starts each layer partway through its own
+   cycle instead of waiting: without them both layers would be at dashoffset 0
+   on load and would leave the connector in a fixed, obviously-repeating
+   pattern for the first cycle.
+
+   Colours, with contrast measured against this section's canvas (#fbf9f5):
+
+     base rail   rgb(28 25 23 / 0.22) -> 1.59:1   (house 10% hairline: 1.22:1)
+     lead        sage #25553d        -> 8.17:1
+     echo        brick #a83b24       -> 6.02:1
+
+   The rail is deliberately faint and is NOT trying to clear a contrast floor
+   on its own - it carries no information, it is the groove the particles run
+   in. 22% over this canvas is roughly a shade stronger than the house's
+   `border-charcoal/10` hairlines (10%), which is what "reads as a rail without
+   reading as a line" looks like as a number. Lifting it to the 3:1 floor would
+   put a mid-grey line across the middle of the diagram and make it compete
+   with the two particle layers, which are the parts actually conveying
+   direction. Both particles clear 3:1 by more than 2x, so the signal survives
+   even where the rail does not. */
+.flow-connector-base {
+  fill: none;
+  stroke: rgb(28 25 23 / 0.22);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.flow-particle {
+  fill: none;
+  stroke: var(--color-brand-green-700);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 7 93;
+  animation: flow-dash 2.2s linear infinite;
+}
+
+.flow-particle--lead {
+  stroke: var(--color-brand-green-700);
+  stroke-width: 2.5;
+  stroke-dasharray: 4 96;
+  animation-duration: 2.2s;
+  animation-delay: -0.7s;
+}
+
+.flow-particle--echo {
+  stroke: var(--color-brand-primary);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 97;
+  animation-duration: 3.1s;
+  animation-delay: -1.9s;
+}
+
+/* The engine's halo. Sized so it cannot reach the card edge or a connector -
+   see the arithmetic in `sections/AutomationFlow.tsx`. `will-change` is NOT set
+   here: two always-animating rings do not benefit from a permanent compositor
+   promotion, and holding one for the life of the page is exactly the memory
+   cost `will-change` is supposed to be spent carefully on. The marquee track
+   earns its own because it is one long, always-moving element. */
+.flow-pulse-ring {
+  animation: flow-core-pulse 3.4s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+  transform-origin: center;
+  will-change: auto;
+}
+
+.flow-pulse-ring--echo {
+  animation-delay: -1.7s;
+}
+
+/* Band-wide pause, and it is what makes the per-pill hover reachable at all.
+   A pill travelling at 127px/s is genuinely hard to put a cursor on; stopping
+   the band on hover means the pill lights up under a stationary pointer and
+   stays lit long enough to read.
+
+   Unlayered so it beats the `animate-hris-marquee` utility's animation
+   shorthand, and gated on `(hover: hover)` for the same iOS/Android reason as
+   the showcase strip: a finger tap latches `:hover` on the tapped element
+   until something else is tapped, so ungated the first touch would freeze the
+   band permanently with nothing on screen saying why. */
+@media (hover: hover) {
+  .hris-marquee:hover .hris-marquee-track,
+  .hris-marquee:focus-within .hris-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Testimonials — 3-column infinite vertical marquee                  */
+/* ------------------------------------------------------------------ */
+
+/* Each column is its own clip window rather than clipping once around the
+   whole grid, so no column can ever scroll its content into view outside its
+   own fade. The mask dissolves the top and bottom 15% so cards fade in and
+   out at both edges instead of being sliced off mid-sentence; the fully
+   opaque band is the middle 70% (406px of the 580px). */
+.testimonials-marquee-column {
+  position: relative;
+  height: 580px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}
+
+/* No gap here on purpose — the gutter belongs to each copy so the two copies
+   are identical in height and translateY(-50%) lands exactly on the seam. */
+.testimonials-marquee-track {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.testimonials-marquee-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Hovering anywhere over the deck — a card, the gutter between cards, or the
+   padding — holds all three columns still so a quote can actually be read,
+   and it resumes the instant the pointer leaves. Unlayered so it beats the
+   `animate-testimonials-*` utility shorthand.
+
+   Gated on `(hover: hover)` for the same documented reason as the showcase
+   strip above: on iOS and Android a tap sets :hover on the tapped element and
+   it stays latched until something else is tapped, so ungated the first
+   finger-touch would freeze the deck permanently with no way to tell. */
+@media (hover: hover) {
+  .testimonials-marquee:hover .testimonials-marquee-track,
+  .testimonials-marquee:focus-within .testimonials-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Below the 768px `md` breakpoint the three columns collapse to one and the
+   vertical scroll is dropped entirely, leaving a single static stack in deck
+   order. A vertical marquee on a narrow viewport is unreadable — you would be
+   chasing quotes that move faster than you can read them — and the contiguous
+   column split means the stack still reads 1->15 in the authored order. */
+/* Tab rail for the services use-case explorer. Below 768px it scrolls
+   horizontally instead of wrapping, and the scrollbar is hidden so the rail
+   reads as a swipeable row of chips rather than a scrollable box. The standard
+   `scrollbar-width` covers Firefox and current Chromium/Safari; the
+   ::-webkit- pseudo covers older WebKit engines. */
+.solution-tablist {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.solution-tablist::-webkit-scrollbar {
+  display: none;
+}
+
+/* Utility: hide scrollbar on horizontal scroll containers. */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  /* THE OLD MOBILE FALLBACK, NOW INERT. This block used to turn the three
+     vertical columns into one static stack below 768px — fifteen cards in deck
+     order, roughly 6,600px of scrolling to reach the CTA. The mobile deck is a
+     horizontal marquee now, and the column grid that this block was undoing is
+     `hidden` below `md`, so none of these rules can reach anything.
+
+     They are left in place rather than deleted, for one reason: this is the only
+     statement of what the desktop deck does below 768px, and it is what a future
+     pass that puts the vertical deck back would want to find. Every rule here is
+     scoped to an element that no longer renders at this width, so leaving them
+     costs nothing at runtime. */
+  .testimonials-marquee-column {
+    height: auto;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .testimonials-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .testimonials-marquee-copy--duplicate {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Testimonials — mobile horizontal marquee, 3 rows, alternating    */
+/* ------------------------------------------------------------------ */
+
+/* THE MOBILE DECK. Three rows of five cards each, scrolling horizontally,
+   alternate directions: row 1 left, row 2 right, row 3 left. The desktop deck
+   is a vertical marquee because it has 580px of height and three columns; on a
+   phone it had 580px of height and ONE column, which is a conveyor belt that
+   moves the text you are trying to read. Turning the axis is what fixes that —
+   the reader chooses which card to stop at rather than chasing one.
+
+   Structure mirrors the columns above, one for one: the row is the clip window,
+   the track holds two identical copies, the mask is on the row rather than on a
+   shared container so no row can scroll a card into view outside its own fade.
+
+   `overflow: hidden` is not optional alongside the mask. A mask fades what is
+   inside the border box to transparent at the edges; content PAINTED OUTSIDE
+   that box is not covered by the mask at all, so without the clip the cards
+   would slide visibly across the linen and white of the page on either side.
+
+   The mask dissolves the outer 8% on each side, which is about 30px at 375px —
+   enough that a card entering or leaving is never sliced off mid-sentence, and
+   narrow enough that two cards are comfortably legible in the opaque middle. */
+.testimonials-marquee-row {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+/* `width: max-content` is what makes this track wider than the viewport at all:
+   a block-level flex container would shrink-wrap to the row and lay the cards
+   out on a single line inside the visible width, leaving nothing to scroll.
+   It also has to be `row` where the column track is `column`, which is the only
+   structural difference between the two axes.
+
+   No gap here, for the reason the vertical track carries none: the gutter
+   belongs to each copy so the two copies are identical in width and
+   translateX(-50%) lands exactly on the seam. */
+.testimonials-marquee-row-track {
+  display: flex;
+  flex-direction: row;
+  width: max-content;
+  will-change: transform;
+}
+
+/* The gutter lives inside the copy, and so does 1rem of trailing padding. The
+   padding is what the vertical copy does not have and this axis needs: without
+   it the last card of one copy butts against the first card of the next with
+   no gutter at all, once per lap, which at 260px cards is a visible collision
+   in the middle of the fade rather than a seam. */
+.testimonials-marquee-row-copy {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding-right: 1rem;
+}
+
+/* The same hover pause the columns get, for the rows — a deck you can stop is a
+   deck you can read, and a 260px card crossing at 36px/s is stoppable but not
+   readable. Unlayered so it beats the `animate-testimonials-*` shorthand, and
+   gated on `(hover: hover)` for the documented iOS/Android reason: a tap latches
+   `:hover` on what it touched, so ungated the first finger-touch would freeze
+   all three rows permanently with nothing on screen saying why. */
+@media (hover: hover) {
+  .testimonials-marquee:hover .testimonials-marquee-row-track,
+  .testimonials-marquee:focus-within .testimonials-marquee-row-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Showcase card geometry. Written as explicit declarations rather than utility
+   classes so the framing is auditable in one place, and unlayered so it wins
+   against Tailwind's preflight and any utility.
+
+   `padding: 0` and no background fill are deliberate: the card is a pure
+   window. Each studio render already carries its own seamless backdrop and
+   ground shadow, so the image's own pixels form the card canvas edge to edge
+   and the rounded corner is cut from the artwork itself. Any padding or tile
+   fill would inset that backdrop and reintroduce a visible frame inside a
+   frame. `box-sizing: border-box` is restated so the 380x380 stays exactly
+   380x380 no matter what padding a future edit reintroduces. */
+.showcase-marquee-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 380px;
+  height: 380px;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* Mobile card size. 380px is right for a 1024px+ band but wider than a 320px
+   viewport, so on a phone each card was being cropped at BOTH edges by the
+   section's own `overflow-hidden` — the product lost its sides and the tile
+   read as a random slice rather than a framed object. 280px leaves a 20px
+   margin at 320px, which is the same gutter the rest of the site uses, and
+   still shows one whole card plus a peek of the next so the strip reads as a
+   strip. The 1:1 ratio, radius and framing are preserved, and because
+   `object-position` percentages are relative to the overflow, the carry-on's
+   `data-focal-point` calibration holds at the smaller size without change. */
+@media (max-width: 639px) {
+  .showcase-marquee-card {
+    width: 280px;
+    height: 280px;
+    border-radius: 16px;
+  }
+}
+
+/* The image fills the card completely, so the frame's rounded corners land on
+   the render's own backdrop rather than on empty space. Deliberately
+   unconstrained in the markup: no width/height attributes, no srcset, no
+   <picture> — the file is decoded as-is and sized only by these rules.
+
+   The !important flags are load-bearing: the track animates `transform`, and
+   these win unconditionally over any utility or inline style that might later
+   reintroduce a box that letterboxes instead of filling. */
+.showcase-marquee-card > img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  /* ── Hover zoom ────────────────────────────────────────────────────────
+     This tile is the site's one standalone image-only card — a window with
+     nothing in it but the render — so it carries the shared image-card zoom:
+     500ms, ease-out, scale 1.05, clipped by the card's own `overflow: hidden`
+     and 20px radius. The transform lives on the `img` rather than the card so
+     the radius keeps cutting the artwork instead of the frame growing out from
+     under it.
+
+     It does not collide with the marquee: the track animates `transform` on
+     `.showcase-marquee-track`, two ancestors up, and each tile is its own
+     containing block — so the zoom composes with the scroll rather than
+     fighting it.
+
+     `transform: scale(1)` is the explicit rest state, and `transform-origin`
+     is stated rather than inherited, so the rule reads the same if this is ever
+     refactored onto a tile that has some other transform already on it. */
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 500ms ease-out;
+}
+
+/* `(hover: hover)` for the same reason the pause above is gated: a tap on a
+   touch screen latches `:hover` on the tile and would leave it stuck at 1.05
+   until something else is touched. Hover-capable pointers get the zoom; touch
+   devices never latch it. */
+@media (hover: hover) {
+  .showcase-marquee-card:hover > img {
+    transform: scale(1.05);
+  }
+}
+
+/* Per-image focal point. Only the carry-on suitcase needs one: it is the single
+   subject taller than the 380px window (481px of product inside a 548px
+   cover-scaled frame), so it is cropped at both ends and no object-position can
+   show all of it — the choice is which end to keep.
+   80% is the lowest value that still clears the contact shadow, and it is high
+   rather than low because object-position slides the window DOWN the image to
+   reveal the BOTTOM. Measured against the pixels:
+     center top  (0%) -> 130px lost off the bottom, contact shadow cut
+     center 50%      ->  46px off the bottom, contact shadow still cut
+     center 80%      ->   0px off the bottom, contact shadow full, 105px off the top
+   The remaining top trim is unavoidable without giving this one card more
+   height, which would break the 1:1 grid the strip is built on. */
+.showcase-marquee-card > img[data-focal-point="bottom"] {
+  object-position: center 80% !important;
+}
+
+/* Scroll-triggered reveal — the observer adds these states client-side, so
+   server-rendered/no-JS content stays visible. These rules are intentionally
+   unlayered: they must win over card-level `transition-all` utilities without
+   needing !important. Delays are assigned per node through --reveal-delay by
+   components/ui/RevealOnScroll.tsx. */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  /* One easing curve for both properties. Opacity previously rode plain `ease`
+     while transform used its own bezier, which made the two diverge slightly
+     across the entrance; a single curve keeps them locked together.
+     0.6s / cubic-bezier(0.21, 0.47, 0.32, 0.98) is the site-wide entrance
+     spec. REVEAL_DURATION_MS in components/ui/RevealOnScroll.tsx must stay
+     equal to the 0.6s here — it is what schedules the `is-settled` handoff. */
+  transition:
+    opacity 0.6s cubic-bezier(0.21, 0.47, 0.32, 0.98),
+    transform 0.6s cubic-bezier(0.21, 0.47, 0.32, 0.98);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Once the entrance has played, hand transform/transition control back to the
+   element's own utilities (notably card hover lifts) and drop the compositor
+   hint. `revert-layer` rolls this unlayered override back to Tailwind's layers. */
+.reveal-on-scroll.is-settled {
+  opacity: 1;
+  transform: revert-layer;
+  transition-property: revert-layer;
+  transition-duration: revert-layer;
+  transition-timing-function: revert-layer;
+  transition-delay: 0ms;
+  will-change: auto;
+}
+
+/* Catalog card entrance - a short, low-amplitude rise, one row at a time.
+
+   This exists because the catalog grid cannot use `.reveal-on-scroll`. That
+   rule staggers by child index off ONE boundary, so its sixteenth node waits
+   300ms + 15x100ms = 1.8s, and it fires for the whole grid as soon as the
+   grid's top edge crosses the line - four rows animating at once while the
+   reader is still on row one. Neither is tunable away without changing the
+   constants every other grid on the site shares. So the catalog observes its
+   cards per row instead (components/catalog/ProductCatalogTabs.tsx) and this is
+   the visual half of that.
+
+   14px of travel rather than the 24px `.reveal-on-scroll` uses, and 0.5s rather
+   than 0.6s: a row that is arriving because the reader just scrolled to it
+   should be arriving quickly and quietly. 24px over 0.6s reads as a big
+   theatrical lift at this card size, repeated four times down the page. The
+   easing is the same premium bezier the other entrances use, so it still feels
+   like the same house.
+
+   `both` fill, for the same reason `.heading-enter` has it: hold the end state
+   rather than snapping back to the element's own values on the final frame.
+
+   The `transform` in the end state is the hazard `.is-settled` was invented to
+   solve - a filled animation outranks a normal declaration, so `translateY(0)`
+   would sit on top of the card's `hover:-translate-y-1` and kill the lift.
+   It is safe only because Tailwind v4 emits that hover as the standalone
+   `translate` property, which composes with `transform` instead of being
+   overridden by it. If that lift is ever rewritten as a `transform`, this needs
+   re-checking. */
+@keyframes catalog-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* The start state lives here rather than on the keyframes alone so a card is
+   hidden BEFORE the observer adds `.is-revealed`, and stays hidden if
+   JavaScript never runs. `data-reveal-*`-free by design: this is not the shared
+   observer's rule and must not be collected by it. */
+.catalog-card-enter {
+  opacity: 0;
+}
+
+.catalog-card-enter.is-revealed {
+  animation: catalog-card-enter 0.5s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+  animation-delay: var(--card-enter-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalog-card-enter,
+  .catalog-card-enter.is-revealed {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* About -> "Our story" -> the three foundation marks: one-shot SVG motion, no
+   library. Same rule `AutomationFlow` states for itself at line 85 - nothing
+   here is framer-motion or Lottie, and everything that moves is a `@keyframes`
+   rule in this file.
+
+   That is not a purity argument, and the honest version matters: framer-motion
+   IS a declared dependency and IS imported by `BudgetCalculator` and
+   `RotatingCubeText`. It was still not used here, for two reasons. Three
+   decorative 24px glyphs are a poor place to introduce a second motion system
+   into a page whose entire entrance language is the one `.reveal-on-scroll`
+   above owns, and a `whileInView` wrapper would make these three icons
+   unrenderable without JS. Written this way they render identically with
+   scripting off - which is also the correct result for decorative marks.
+
+   THE TRIGGER IS FREE. No second observer, no new hook, no state, no client
+   component. The rail already carries `data-reveal-stagger`, so
+   `RevealOnScroll` adds `.is-revealed` to each of the three pillar divs as
+   they arrive. These rules are descendant-keyed off that class, so the motion
+   starts on the same frame as the entrance that reveals it, fires once, and
+   inherits the same unobserve-then-forget semantics. `.fn-mark` on the rail
+   scopes the whole set to this one section.
+
+   EVERY KEYFRAME HERE RETURNS TO REST, and that is the load-bearing decision.
+   All four are `rest -> peak -> rest` rather than `rest -> open end state`,
+   because the resting appearance has to be correct WITHOUT the animation
+   running. Three cases depend on that, and all three are common: scripting
+   disabled (no `.is-revealed` is ever added), reduced motion (cancelled in the
+   media query below), and print. Had `fn-lid-unclasp` ended on an open lid,
+   every one of those would render an open lid permanently, and the gift box
+   would only look like a gift box for the second before it settled. The
+   markup is the resting truth and the animation is a departure from it.
+
+   DELAYS EXIST BECAUSE THE PILLAR IS INVISIBLE WHEN THEY START. A pillar
+   enters at `opacity: 0` over 0.6s behind a 300ms stagger offset, so motion
+   starting at frame zero spends its opening beats under a fully transparent
+   parent. Each mark waits 240-260ms, by which point the pillar is around
+   half-faded, and the peak lands in the second half of the entrance. */
+
+.fn-mark .fn-sparkle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The lid hinges on its own seam at y=12.5, the line where it meets the box
+   body. `view-box` rather than `fill-box` because the origin is expressed in
+   viewBox coordinates and has to be the seam across the full 17-unit width,
+   not the centre of whichever child is being transformed. */
+.fn-mark .fn-lid {
+  transform-box: view-box;
+  transform-origin: 12px 12.5px;
+}
+
+.fn-mark .fn-truck {
+  transform-box: view-box;
+  transform-origin: center;
+}
+
+/* SELECTOR ORDER IS LOAD-BEARING AND IS NOT INTERCHANGEABLE. `.fn-mark` is on
+   the rail; `.is-revealed` lands on the three PILLARS, which are the rail's
+   children, because `data-reveal-stagger` collects a container's children and
+   not the container. The DOM order is therefore
+
+       .fn-mark  >  .is-revealed  >  svg  >  .fn-lid
+
+   and only `.fn-mark .is-revealed .fn-lid` matches it. Writing it the other
+   way round compiles fine and silently animates nothing. */
+.fn-mark .is-revealed .fn-sparkle {
+  animation: fn-sparkle-pop 1150ms cubic-bezier(0.34, 1.56, 0.64, 1) 260ms both;
+}
+
+.fn-mark .is-revealed .fn-lid {
+  animation: fn-lid-unclasp 1250ms cubic-bezier(0.22, 1, 0.36, 1) 240ms both;
+}
+
+.fn-mark .is-revealed .fn-truck {
+  animation: fn-truck-roll 1250ms cubic-bezier(0.33, 0, 0.15, 1) 260ms both;
+}
+
+.fn-mark .is-revealed .fn-road {
+  animation: fn-road-travel 1250ms cubic-bezier(0.4, 0, 0.2, 1) 260ms both;
+}
+
+/* 0.55 -> 1.12 -> 0.98 -> 1. The two-step overshoot is the "pop"; the small
+   undershoot on the way back is what stops it reading as a single bounce. */
+@keyframes fn-sparkle-pop {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.35;
+  }
+  38% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.98);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 2.4px of lift against an 11 degree tilt about the seam. The lift alone reads
+   as the whole box rising; the tilt is what makes it read as a lid coming off
+   a hinge rather than a box bouncing. */
+@keyframes fn-lid-unclasp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  42% {
+    transform: translateY(-2.4px) rotate(-11deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* 2.1px of travel on a 24px icon, which is still 8.75% of its width and the
+   smallest displacement here that reads as movement rather than as a repaint.
+   0.5px of overshoot past the mark's rest position and back.
+
+   2.1 rather than a rounder 2.4 is deliberate. The truck's left edge sits at
+   x=3 and its stroke is 1.5 wide, so the painted edge begins at x=2.25; at
+   2.4px of travel that edge reaches -0.15, just outside the viewBox, and the
+   outer `<svg>` clips to it. 0.15 units is 0.15px on screen and it would be
+   invisible, but it is also free to not do. */
+@keyframes fn-truck-roll {
+  0% {
+    transform: translateX(-2.1px);
+  }
+  62% {
+    transform: translateX(0.5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Retracts the dashes into the left edge so the road appears to be laid as the
+   truck reaches it. 4.4 is one full 2.2 dash plus one 2.2 gap, so the line
+   arrives whole rather than half-drawn. */
+@keyframes fn-road-travel {
+  0% {
+    stroke-dashoffset: 4.4;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Cancelling the animation, not merely shortening it. `animation: none` drops
+   the whole declaration including the `both` fill, so the part falls back to
+   its markup transform - which, per the block comment above, IS the resting
+   state. A `0.01s` override would instead snap every mark to its 100% keyframe
+   and hold it there via fill mode, which happens to look the same but pins a
+   transform that then blocks the group's own positioning for as long as the
+   page lives. */
+@media (prefers-reduced-motion: reduce) {
+  .fn-mark .is-revealed .fn-sparkle,
+  .fn-mark .is-revealed .fn-lid,
+  .fn-mark .is-revealed .fn-truck,
+  .fn-mark .is-revealed .fn-road {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   HOME > "How it works" > the four step-card visual slots.
+
+   Same rule as `AutomationFlow.tsx` line 85 and as the About story marks
+   above: pure CSS and SVG, no library. Everything that moves is a
+   `@keyframes` rule in this file.
+
+   TWO OF THE BRIEF'S MECHANICAL CHOICES COULD NOT SURVIVE THIS SECTION.
+
+   `whileInView` would fire all four panels at once. The four windows are
+   `absolute inset-0` and differ from each other only by `opacity-0
+   pointer-events-none scale-[0.98]`, so geometrically all four sit inside the
+   viewport the moment the section scrolls in. Three scenes would play unseen
+   against the backdrop, and the reader would arrive at each one to find it
+   already finished. These are keyed off the panel becoming the SELECTED tab
+   instead, which is the only moment a reader can see one.
+
+   `framer-motion` itself would be the first library-driven animation inside a
+   section, in a file whose whole motion language is already CSS - and one
+   whose commentary is emphatic that Tailwind scans raw source text and that an
+   interpolated class value emits no rule at all. A dependency that bypasses
+   both would be a strange place to introduce it.
+
+   ── THE WHOLE BLOCK RUNS AT ABOUT HALF SPEED THIS PASS ───────────────────
+   Every duration below is roughly double what it was and every stagger with
+   it. That is not free: the section's dwell had to go up with them, because the
+   two are not independent. A scene that outruns the dwell is a scene the reader
+   never sees finish, so the old budget - dwell 4500ms, crossfade 400ms, nothing
+   allowed past 4100ms - had no room for a slower pass at all.
+
+   The budget now reads
+
+       slowest scene   5600ms   scene 02's press ring
+       crossfade        500ms
+       dwell           6200ms   so 600ms of finished, held frame before the swap
+
+   The 4500ms figure was itself a considered choice, recorded at length in
+   `HowItWorks.tsx`: it was reduced from 7000 to stop the sliding indicator
+   reading as a stalled animation. That argument is now spent. A four step loop
+   is 24.8 seconds rather than 18, which does read as a slideshow rather than a
+   demo, and it is a real cost of the brief's "ample time to absorb" - named
+   here so the next person can see it was priced rather than missed.
+
+   What protects the reader is unchanged and still load-bearing: the section
+   pauses on hover and on focus, which is what WCAG 2.2.2 requires, and 6200ms
+   is still above the five seconds at which that obligation begins.
+
+   NOTHING HERE IS LOAD-BEARING FOR READING. Every resting state is the
+   FINISHED screenshot, authored into the markup itself:
+
+     01  the selected day and the selected slot already carry their accent
+         border and their badge
+     02  the picked tile already carries its tick, and the three catalog cards
+         below already say which product was chosen
+     03  the four bars already encode `reached`
+     04  the five stars are already filled and the quote bubble is already open
+
+   So with scripting off, or under reduced motion, the section shows its final
+   state and loses only the journey. The transient artefacts - the cursor, the
+   press rings, the tracking sweep, the node flashes - are the deliberate
+   exception: their resting state is absence, so they start and end at
+   `opacity: 0`. Scene 03 is now the only scene whose every moving part is
+   transient, and that is deliberate; see its own note.
+   ========================================================================== */
+
+/* ── SCENE 01 · BOOK A CONSULTATION ───────────────────────────────────────
+   A cursor travels into the chosen day, presses it, and leaves; the badge and
+   the ring land on the press. The same cursor then repeats on the chosen
+   time slot, offset late enough to read as a second action rather than as a
+   repeat of the first.
+
+   Travel, press, release, leave - one keyframe, because the four phases have
+   to stay locked to each other. Splitting the press into its own animation
+   would let it drift against the travel on a slow frame, and the click would
+   read as landing somewhere the cursor had already left. */
+
+@keyframes hiw-cursor-travel {
+  0% {
+    opacity: 0;
+    transform: translate(-23px, -21px);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  52% {
+    opacity: 1;
+    transform: translate(-5px, -5px);
+  }
+
+  /* The press. `scale(0.82)` rather than a shadow or a ring, because the ring
+     is already doing the "this was activated" job on the tile beneath and two
+     effects on one click is one too many. */
+  62% {
+    transform: translate(-5px, -5px) scale(0.82);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translate(-5px, -5px) scale(1);
+  }
+
+  88% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-5px, -5px) scale(1);
+  }
+}
+
+/* Travel distances, and why they are px. The cursor is 20px inside a wrapper
+   already centred on the tile, so `translate(-5px, -5px)` puts its top-left
+   just up and left of centre and it reads as centred rather than offset; the
+   start is exactly 18px further up and left. In px on an HTML element these are
+   CSS px at every width, which matters because the day tiles are about 110px
+   wide on desktop and about 55px on a 375px phone - a percentage would have
+   travelled twice as far on one as on the other, so the press would land off
+   the tile on mobile and short of it on desktop. */
+
+/* The badge is VISIBLE at rest. It is the proof that a choice was made, and
+   the tile's accent border alone does not say which choice - a reader who
+   never sees the animation still needs to be able to read the selection. */
+@keyframes hiw-badge-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -4px) scale(0.7);
+  }
+
+  55% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.06);
+  }
+
+  78% {
+    transform: translate(-50%, 0) scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* A ring thrown outward from the press point and gone. Opacity 0 at both ends,
+   so it exists only during the click. */
+@keyframes hiw-ring-flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  18% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+/* ── SCENE 02 · WE CURATE A SHORTLIST ─────────────────────────────────────
+   A cursor glides the length of a row of three tiles, comes to rest on the one
+   the data says was picked, and presses it. The picked tile answers with a
+   ring and a tick.
+
+   THE GLIDE IS ON `left`, FOR THE SAME REASON THE TRUCK WAS. A `translateX` in
+   a percentage resolves against the CURSOR's own 20px, not the row's, so it
+   cannot express "half way along three tiles". `left` in a percentage
+   resolves against the row, which is what is wanted, and it needs no
+   measurement in JS. Same trade as the truck: not compositor-accelerated, for
+   one 20px element, once, in a panel the reader is already looking at.
+
+   `--hiw-pick-pct` is set inline at the call site as
+   `(selected + 0.5) / tileCount * 100%`, i.e. the picked tile's CENTRE. Both
+   keyframe stops are written as the same shape - a percentage minus a constant
+   - so the interpolation is percentage-to-percentage and never has to resolve
+   a bare percentage against a length.
+
+   The constant is half the cursor, 10px, because `left` positions the LEFT
+   EDGE and the destinations are centres. It is in px rather than in a rem so
+   that it cannot drift out of step with the 20px the cursor is actually
+   rendered at.
+
+   The 16px gap between tiles is deliberately ignored, which costs at most
+   4.5px of error at the far tile - under a tenth of a tile's width, and
+   invisible. The exact expression needs the row's own width, which CSS cannot
+   see, and approximating it is right here.
+
+   THE PRESS IS A SEPARATE KEYFRAME ON THE ICON, not a second stop in the
+   glide. Two animations can drive one element as long as they write different
+   properties - `left` and `opacity` here, `transform` there - and splitting
+   them this way is what lets the press happen at a stated moment instead of at
+   whatever percentage of the travel happens to coincide with the arrival.
+   Putting both in one keyframe would work too and would tie them together for
+   no benefit. */
+
+@keyframes hiw-pick-glide {
+  0% {
+    left: calc(0% - 10px);
+    opacity: 0;
+  }
+
+  14% {
+    opacity: 1;
+  }
+
+  86% {
+    opacity: 1;
+  }
+
+  /* Back to `both`, so the resting state after the fill is the invisible
+     end rather than wherever the fill mode left it. */
+  100% {
+    left: calc(var(--hiw-pick-pct) - 10px);
+    opacity: 0;
+  }
+}
+
+/* The press itself, on the icon inside the gliding wrapper so that the
+   wrapper's own centring transform is not fought over. */
+@keyframes hiw-pick-press {
+  0%,
+  84% {
+    transform: scale(1);
+  }
+
+  92% {
+    transform: scale(0.8);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* ── SCENE 03 · WE FULFIL & TRACK ─────────────────────────────────────────
+   A 5000ms accent line sweeps the full length of the four-stage track and each
+   of the four nodes lights as it passes. 5000ms and the 1300ms stagger are
+   the brief's own figures, not this file's.
+
+   EVERY PART OF THIS SCENE IS TRANSIENT, AND THAT IS THE WHOLE ARGUMENT.
+
+   The panel's own status pill reads "In transit" and its ETA block says the
+   parcel is arriving on Monday. Lighting "Delivered" and leaving it lit puts
+   those two facts next to a third one that contradicts them, in the one card
+   on this section that is making a claim about tracking. The supplied
+   component ran its fill line to 100% and held it there, which has that
+   problem permanently rather than for five seconds.
+
+   So the sweep and the four node flashes both START at nothing and END at
+   nothing. The reader is shown the whole journey once - all four stages,
+   sequentially, in accent, over five unhurried seconds - and then the card is
+   exactly what it is with the animation switched off: two bars solid, one at
+   35%, one inert, "In transit". A demonstration playing, rather than a claim.
+
+   That is why there is no destination to derive here. The previous version of
+   this scene computed `--hiw-track-end` from `reached` so a truck would stop
+   on the in-flight node, and this pass has no truck and no destination at all.
+
+   THE FOUR NODES ARE PIPS ABOVE THE BARS, which reverses an earlier decision
+   in this block, so the reason is worth keeping. Pips were rejected once
+   before because they were accent-coloured and sat on accent-coloured bars -
+   invisible on precisely the two stages the animation was about - and because
+   they were a second set of markers beside a row that already had one. Both
+   objections are answered by making them white-filled with an accent ring
+   rather than accent-filled, which reads on a solid bar and on an inert one
+   alike, and by the fact that the row is no longer doing the same job: the
+   bars encode WHERE THE PARCEL IS and the pips encode THE JOURNEY, which is
+   not the same statement and cannot be merged without one of them lying.
+
+   `left` in a percentage, same reason as the cursor's glide and for the same
+   reason as the old truck: a percentage on `translateX` would resolve against
+   the pip's own 10px. The centring translate is baked into the keyframe's
+   transform rather than left to a utility class, because an animated
+   `transform` outranks a class's and a half-off pip is exactly the kind of
+   error nobody notices until it is pointed at. */
+
+@keyframes hiw-track-sweep {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  /* Fades UP over the first 8% and DOWN over the last 8%, so the line
+     arrives and leaves rather than blinking into existence at the ends. */
+  8%,
+  88% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+/* One node's flash: rest, lit, rest. `rest` is written as the same
+   `color-mix` the markup's border token compiles to, so the flash returns the
+   pip to exactly the state it held before rather than to something close. */
+@keyframes hiw-node-light {
+  0%,
+  100% {
+    border-color: color-mix(in srgb, var(--color-charcoal) 25%, transparent);
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  45% {
+    border-color: var(--color-brand-primary);
+    transform: translate(-50%, -50%) scale(1.55);
+  }
+}
+
+/* The stage LABELS do not animate at all, which is a deliberate asymmetry and
+   is unchanged by this pass. They are existing design that already encodes the
+   same state by weight and opacity, and recolouring them would be restyling
+   what the brief told me to leave alone. The bars and the pips carry the
+   movement and the labels stay quiet. */
+
+/* ── SCENE 04 · THEY FEEL CELEBRATED ──────────────────────────────────────
+   A cursor glides the length of a five-star rating, the stars fill in its
+   wake, and the customer's quote opens underneath.
+
+   THE STARS ARE THE INPUT, NOT THE OUTPUT. An earlier version of this scene
+   had the stars inside the bubble, arriving after it - which meant the bubble
+   was reacting to something the reader had never seen, and the two could not
+   be read as one event. Here the reader clicks the rating and the quote is
+   what comes back, which is the order the brief asks for and the order that
+   makes sense.
+
+   THE STARS PERSIST AND THE BUBBLE PERSISTS. Both rest visible in the markup,
+   because both are the finished screenshot: a filled five-star row and an open
+   quote is the result, and a card that rests on three grey outlines and no
+   quote is an interactive control that cannot be interacted with. Only the
+   cursor is transient.
+
+   THE GLIDE IS THE SAME KEYFRAME AS SCENE 02'S, with a different
+   `--hiw-pick-pct` and a different duration. Two scenes whose cursor does
+   "travel along a row and settle on a target" are one animation with two
+   inputs, and writing a fourth travel keyframe for the sake of symmetry would
+   have been three keyframes agreeing on nothing. */
+
+@keyframes hiw-star-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-18deg);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.18) rotate(4deg);
+  }
+
+  75% {
+    transform: scale(0.96) rotate(-2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* THE QUOTE OPENS LATE, AFTER THE RATING IS FULL, because it is the reply to
+   the rating. It also has to clear the fifth star: the last star's pop ends at
+   3540ms and the bubble starts at 3800ms, so the two are visibly sequential
+   rather than overlapping, and the bubble never appears to swallow the stars it
+   was asked about.
+
+   `translateY` AND `scale`, and no `transform-origin` declaration: the default
+   origin is the element's own centre, which is what an expanding box wants.
+
+   This replaces a `scale(0.7)` version written for a small pill. At the size a
+   five-line quotation needs, a 0.7 start is a hard read as a shrinking
+   thumbnail rather than as a box opening, and it squeezed the text while it
+   grew. `0.96` with a 12px rise reads as an expansion at this scale and does
+   not distort the type. */
+@keyframes hiw-bubble-open {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateY(0) scale(1.008);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── TRIGGERS ─────────────────────────────────────────────────────────────
+   `.hiw-live` goes on the tabpanel that is currently selected, set in
+   `HowItWorks.tsx` from `activeIndex`. Removing it and re-adding it restarts
+   every animation on the panel, which is what makes a scene replay each time
+   the reader returns to that tab.
+
+   Every other `.hiw-*` class marks one animated part inside a scene. One rule
+   per part, with the delay on the rule and the index passed in from the call
+   site as `--hiw-stage` or `--hiw-star`, so a five-star row is five uses of one
+   declaration rather than five hand-written ones.
+
+   The delays are aligned to the keyframes above rather than spaced evenly.
+   Scene 01's cursor presses at 62% of its own 3000ms, so 1860ms in, plus the
+   400ms of lead-in: the day press lands at 2260ms and its ring opens at 2300ms,
+   which is 40ms after the press and 340ms before it releases. The badge opens
+   at 2600ms.
+
+   The `--slot` rules REPLACE the delay rather than adding to it - 2200ms, not
+   2600ms - so the slot press lands at 4060ms, its ring at 4300ms and its badge
+   at 4400ms. The longest thing in the scene is then the slot's ring, done at
+   5400ms. */
+
+.hiw-live .hiw-cursor {
+  animation: hiw-cursor-travel 3000ms cubic-bezier(0.4, 0, 0.2, 1) 400ms both;
+}
+
+.hiw-live .hiw-cursor--slot {
+  animation-delay: 2200ms;
+}
+
+.hiw-live .hiw-ring {
+  animation: hiw-ring-flash 1100ms cubic-bezier(0.4, 0, 0.2, 1) 2300ms both;
+}
+
+.hiw-live .hiw-ring--slot {
+  animation-delay: 4300ms;
+}
+
+.hiw-live .hiw-badge {
+  animation: hiw-badge-pop 800ms cubic-bezier(0.34, 1.56, 0.64, 1) 2600ms both;
+}
+
+.hiw-live .hiw-badge--slot {
+  animation-delay: 4400ms;
+}
+
+/* SCENE 02. The glide is 4000ms and presses over its last 16%, so the press
+   runs 3760ms to 4400ms with the lead-in. The ring opens at 4400ms, which is
+   640ms after the press BEGINS rather than on it - a ring that fires under the
+   cursor while it is down is a ring nobody sees. The tick lands at 4500ms and
+   holds. 4400 + 1200 is the 5600ms that sets the section's whole budget. */
+
+.hiw-live .hiw-glide {
+  animation: hiw-pick-glide 4000ms cubic-bezier(0.4, 0, 0.2, 1) 400ms both;
+}
+
+/* The press rides on the icon rather than the wrapper, because the wrapper
+   carries the row's centring translate and two transforms on one element is
+   one too many. Same 4000ms window and same lead-in, so the two cannot drift
+   against each other on a slow frame. */
+.hiw-live .hiw-press {
+  animation: hiw-pick-press 4000ms cubic-bezier(0.4, 0, 0.2, 1) 400ms both;
+}
+
+.hiw-live .hiw-ring--pick {
+  animation-delay: 4400ms;
+  animation-duration: 1200ms;
+}
+
+/* SCENE 03. 5000ms is the brief's figure and the 1300ms stagger is its
+   `idx * 1.3`; both are carried over unchanged because this is the scene the
+   brief specified numerically. The node DURATION is the one figure here that
+   departs from the supplied component, which passed 600ms: the brief's first
+   instruction was to slow everything down, and a 600ms pop is the fastest thing
+   in the block. At 800ms the four flashes still read as four separate events
+   inside the 5000ms run.
+
+   The last node's flash ends at 5100ms and the sweep at 5400ms, so the line
+   reaches the final node and then leaves. Nothing is still moving at 5400ms. */
+
+.hiw-live .hiw-sweep {
+  animation: hiw-track-sweep 5000ms cubic-bezier(0.4, 0, 0.2, 1) 400ms both;
+}
+
+.hiw-live .hiw-node {
+  animation: hiw-node-light 800ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(400ms + var(--hiw-stage, 0) * 1300ms);
+}
+
+/* SCENE 04. The same glide, shorter: 3600ms with the same 400ms lead-in, so
+   its press runs 3424ms to 4000ms. The five stars fill in its wake on a 560ms
+   stagger from 700ms, and the fifth is done at 3540ms - which is BEFORE the
+   press ends, so the last star lands while the cursor is still on the row
+   rather than after it has left. The bubble then opens at 3800ms and is settled
+   by 5400ms. */
+
+.hiw-live .hiw-glide--stars {
+  animation-duration: 3600ms;
+}
+
+.hiw-live .hiw-press--stars {
+  animation-duration: 3600ms;
+}
+
+.hiw-live .hiw-star {
+  animation: hiw-star-pop 600ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(700ms + var(--hiw-star, 0) * 560ms);
+}
+
+.hiw-live .hiw-bubble {
+  animation: hiw-bubble-open 1600ms cubic-bezier(0.22, 1, 0.36, 1) 3800ms both;
+}
+
+/* Everything transient starts invisible, so the resting state is absence and
+   not a frozen first frame. The glide and the sweep join the cursor and the
+   rings here; the tick, the bars, the stars and the bubble deliberately do
+   not, because those are the parts that persist. */
+.hiw-cursor,
+.hiw-ring,
+.hiw-glide,
+.hiw-sweep {
+  opacity: 0;
+}
+
+/* Reduced motion cancels all of it outright. `animation: none` drops the fill
+   mode too, so each part falls back to its markup state - which, per the
+   header note, is the finished screenshot. A 0.01s override would instead pin
+   every part to its 100% keyframe, which for the badges, the tick, the stars
+   and the bubble happens to match but for the cursor, the rings, the sweep and
+   the node flashes would leave a cursor frozen on a tile, a ring frozen
+   mid-flight and a full accent line sitting across a parcel that is still in
+   transit. */
+@media (prefers-reduced-motion: reduce) {
+  .hiw-live .hiw-cursor,
+  .hiw-live .hiw-cursor--slot,
+  .hiw-live .hiw-ring,
+  .hiw-live .hiw-ring--slot,
+  .hiw-live .hiw-ring--pick,
+  .hiw-live .hiw-badge,
+  .hiw-live .hiw-badge--slot,
+  .hiw-live .hiw-glide,
+  .hiw-live .hiw-glide--stars,
+  .hiw-live .hiw-press,
+  .hiw-live .hiw-press--stars,
+  .hiw-live .hiw-sweep,
+  .hiw-live .hiw-node,
+  .hiw-live .hiw-star,
+  .hiw-live .hiw-bubble {
+    animation: none !important;
+  }
+
+  .hiw-cursor,
+  .hiw-ring,
+  .hiw-glide,
+  .hiw-sweep {
+    opacity: 0 !important;
+  }
+}
+
+/* Load-triggered heading entrance - the load-time twin of `.reveal-on-scroll`,
+   for a heading that must be readable the moment the page paints rather than on
+   scroll. Applied by `enterOnLoad` in components/ui/SectionHeading.tsx, which
+   ALSO drops `data-reveal-header` so the observer never collects the children.
+   That drop is the load-bearing half: `reveal-on-scroll` is `opacity: 0` in
+   unlayered CSS (see above), so it outranks every `@layer` utility and no
+   `opacity-100` at the call site could rescue a heading already collected.
+   Without opting out, two entrances would fight over the same three nodes.
+
+   Deliberately not `--animate-rise`: that is 0.8s, and the site-wide entrance
+   spec is the 0.6s / cubic-bezier(0.21, 0.47, 0.32, 0.98) the reveal rules
+   above use. This matches that instead of adding a third timing. Unlayered for
+   the same reason they are. */
+@keyframes heading-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* `both` fill, so the end state is held after the animation rather than
+   snapping back to the element's own values on the final frame. */
+.heading-enter > * {
+  animation: heading-enter 0.6s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+}
+
+/* Same eyebrow -> title -> description rhythm the observer applies to
+   [data-reveal-header], at the same STEP_MS (100ms) from
+   components/ui/RevealOnScroll.tsx, so a heading moved to this path keeps the
+   cadence it had. Three positional rules rather than a delay attribute because
+   the description is optional - nth-child simply leaves that slot unused. */
+.heading-enter > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.heading-enter > *:nth-child(2) {
+  animation-delay: 100ms;
+}
+.heading-enter > *:nth-child(3) {
+  animation-delay: 200ms;
+}
+
+/* The idle loop begins and ends at the exact neutral inner transform used by
+   the hover-reveal state. This removes the handoff snap while ease-in-out
+   keeps velocity at zero at every extreme. */
+@keyframes softFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(-1.5deg);
+  }
+}
+
+/* Hero gift fountain: product cutouts stay hidden at rest, then fan out only
+   while the corresponding heading area is hovered or keyboard-focused. */
+@layer components {
+  .hero-entrance {
+    opacity: 0;
+    animation: hero-entrance-rise 0.9s
+      cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Fixed layout relationship between the hero CTA row and rating block. */
+  .hero-cta-social-proof-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .hero-content {
+    opacity: 1 !important;
+  }
+
+  .hero-heading-fountain {
+    isolation: isolate;
+    width: 100%;
+    max-width: 60rem;
+    min-height: 16rem;
+    margin-inline: auto;
+    overflow: visible;
+  }
+
+  .hero-heading-title {
+    display: block;
+    width: 100%;
+    min-height: 14rem;
+    margin-inline: auto;
+    font-size: clamp(1.5rem, 7vw, 3rem);
+  }
+
+  .hero-heading-line {
+    display: block;
+    width: 100%;
+  }
+
+  .hero-heading-line--lead,
+  .hero-heading-line--tail {
+    white-space: nowrap;
+  }
+
+  .hero-heading-line--flipper {
+    display: flex;
+    min-height: 1.05em;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-gift-fountain {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .hero-gift-cutout {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    display: block;
+    pointer-events: none;
+    opacity: 0;
+    /* Where on its own burst vector this cutout stops on the way home, as a
+       fraction of the full offset. Overridden per item from the array in
+       `HeadingFountain.tsx`; this is the fallback for a cutout added without
+       one, and it is also what the entrance interpolates *from* being absent
+       from matters for — the value is only ever read by the exit rule, so
+       nothing here depends on it. See the exit block for the derivation. */
+    --exit-factor: 0.5;
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+    transform-origin: center;
+    transition:
+      opacity 420ms ease-out,
+      transform 560ms var(--ease-premium);
+    transition-delay: 0ms;
+    will-change: transform, opacity;
+  }
+
+  .hero-gift-float {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+    transform-origin: center;
+    animation: softFloat 4s ease-in-out infinite alternate backwards;
+    animation-delay: var(--float-delay, 0s);
+    animation-play-state: paused;
+    will-change: transform;
+  }
+
+  .hero-heading-fountain:hover .hero-gift-float,
+  .hero-heading-fountain:focus-within .hero-gift-float {
+    animation-play-state: running;
+  }
+
+  /* The exit is deliberately not beside this rule. It needs to be barred from
+     matching while this one is, and it needs a second phase after it finishes,
+     which a single selector match cannot express — so it lives further down,
+     unlayered. */
+  .hero-heading-fountain:hover .hero-gift-cutout,
+  .hero-heading-fountain:focus-within .hero-gift-cutout {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) translateX(var(--burst-x))
+      translateY(var(--burst-y)) scale(var(--burst-scale))
+      rotate(var(--burst-rotation));
+    /* Both legs start at 0ms, and that is the uniformity: one shared duration
+       and one shared start for all ten, so opacity cannot lag the transform of
+       the cutout it belongs to. `--burst-delay` is still read here and is
+       still 0ms for every cutout — declared rather than hard-coded so the
+       intent stays readable and the two legs remain one value.
+
+       The stagger this replaced (0/40/…/360ms) was the reason the fade read as
+       uneven: the last item's reveal began a third of a second after the
+       first's, which is a velocity difference across a single hover. With it
+       gone, all ten fade and travel as one body, and the only thing
+       distinguishing them is the direction they go. */
+    transition:
+      opacity 320ms ease-out var(--burst-delay),
+      transform 760ms var(--ease-fountain) var(--burst-delay);
+  }
+
+  .floating-nav-motion {
+    transition:
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      top 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-heading-title {
+    font-size: clamp(2.5rem, 7vw, 3.35rem) !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-heading-fountain {
+    min-height: 16rem;
+  }
+
+  .hero-heading-title {
+    min-height: 12rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .hero-heading-fountain {
+    min-height: 20.5rem;
+  }
+
+  .hero-heading-title {
+    min-height: 18rem;
+  }
+
+  .hero-gift-cutout {
+    transition-duration: 360ms, 620ms;
+  }
+
+  .hero-heading-fountain:hover .hero-gift-cutout,
+  .hero-heading-fountain:focus-within .hero-gift-cutout {
+    transition-duration: 260ms, 620ms;
+  }
+
+  .hero-gift-cutout:nth-child(1) {
+    --burst-x: -30vw !important;
+  }
+
+  .hero-gift-cutout:nth-child(2) {
+    --burst-x: 28vw !important;
+  }
+
+  .hero-gift-cutout:nth-child(6) {
+    --burst-x: 30vw !important;
+  }
+
+  .hero-gift-cutout:nth-child(7) {
+    --burst-x: -30vw !important;
+    --burst-y: 4rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(8) {
+    --burst-x: 30vw !important;
+  }
+
+  /* Back layer. The Y keeps it below everything above it so the two back-layer
+     cutouts read as a second row rather than as items crowding the same band.
+     The X is the midpoint of the two items it sits under — the Notebook is not
+     pinned in this band, so it keeps its own -36vw, and the Water Bottle is
+     pinned to -30vw. Same derivation as the inline clamp, recomputed for the
+     band: -33vw, not the -30vw it used to share with the Water Bottle.
+
+     Note this band is the one place the rule moves the cutout inboard rather
+     than out: down here the Water Bottle's -30vw sits CLOSER to the headline
+     than the Notebook's own -36vw, the opposite of the ordering above 1024px,
+     so the midpoint of the two lands outside the Bottle and this reads as
+     11-19px further left than the old -30vw. That is the rule applied honestly
+     rather than a special case, and the left-edge margin still holds at 17px on
+     a 360px phone. If the phone row is ever wanted to hug the left edge
+     instead, this is the line to change — not the inline clamp. */
+  .hero-gift-cutout:nth-child(9) {
+    --burst-x: -33vw !important;
+    --burst-y: 7rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(10) {
+    --burst-x: 30vw !important;
+    --burst-y: 8rem !important;
+  }
+}
+
+/* ── Fountain exit: an exact reverse of the entrance, faded out early ──────
+   Three placement decisions here, all load-bearing.
+
+   The block is unlayered and sits below the small-screen overrides above.
+   Unlayered declarations outrank everything inside `@layer components`, so
+   the reveal above keeps winning on load without any `!important`; and
+   coming after the `max-width: 639px` query's `transition-duration`
+   override means the two legs below are 350ms/100ms on phones too, rather
+   than being stretched to the 620ms that override asks for. Source order
+   alone would not have been enough there, since both are unlayered.
+
+   `:not(:hover):not(:focus-within)` is the other dependency. The reveal
+   targets these same elements from this same cascade, so the exit must be
+   barred from matching while the trigger is still active. That is what
+   guarantees the reveal is untouched by any of this: the guard fails the
+   instant the pointer is gone, whatever React has or has not committed, and
+   the reveal still runs exactly as before on the way back in.
+
+   ── Why the transform here is the rest value, verbatim ──────────────────
+   `transform` below is the `.hero-gift-cutout` base declaration copied
+   exactly: `translate(-50%, -50%) scale(0.2) rotate(0deg)`. That is what
+   makes the exit an exact reverse rather than an approximation. The reveal's
+   list is `translate(-50%, -50%) translateX() translateY() scale() rotate()`,
+   and a shorter list is padded with identity functions, so this one resolves
+   to `translate() translateX(0) translateY(0) scale() rotate()` — same
+   function count, same order, every component interpolating directly. No
+   matrix fallback, and the two legs are literal time-reverses of each other:
+   burst-x and burst-y run down to zero, burst-scale runs down to 0.2, and
+   `--burst-delay` is `0ms` on both legs, so every cutout retraces its own
+   vector at the speed and on the curve it arrived at.
+
+   burst-rotation is uniformly `0deg` across the set, so that leg is a no-op
+   in both directions. It is still written into both transform lists above:
+   the six functions are what make these literal time-reverses, and dropping
+   `rotate()` would hand interpolation to matrix decomposition.
+
+   Nothing about the trajectory is invented here any more. The lift and the
+   8% growth this rule used to add are gone: they were the old workaround for
+   an exit that could not travel home, and their real effect was to park a
+   growing copy of each cutout in mid-air over the copy below it.
+
+   ── Two rules, because opacity and the trajectory answer to different
+      questions ─────────────────────────────────────────────────────────
+   The fade is state-free, keyed on `:not(:hover)` alone. It does not wait for
+   React to commit `[data-gift-phase]`, because a frame is 16ms of a 250ms leg
+   and the cutouts are meant to be gone before that matters. At rest the rule
+   is a no-op — `opacity: 0` is already the base value and no transform is
+   declared here — which is what lets it match without a phase.
+
+   The *target* is phase-gated, and has to be. The exit no longer ends at the
+   origin: it ends on the headline's own bounding box, at `--exit-factor` of
+   the way along the burst vector (see the derivation below). That target is
+   wrong at rest — the cutouts have to start the next reveal from the origin,
+   or the entrance begins halfway out — so the transform cannot be declared by
+   a rule that is always on.
+
+   ── Why the target is the perimeter and not the centre ─────────────────
+   Timing cannot put the cutouts somewhere; only the target can. A leg that
+   runs 250ms to the origin spends most of that leg *inside* the headline, and
+   the two requirements this exit has to satisfy — travel back visibly through
+   mid-air, and never cross a letter — are only compatible if the path ends at
+   the boundary. So the path is the entry vector truncated: the cutout runs
+   back along exactly the line it arrived on, and stops where that line meets
+   the h1's box. Everything about the exit is then true by construction rather
+   than by tuning, and no viewport can produce an overlap that the geometry
+   does not already exclude.
+
+   `--exit-factor` is the fraction of the burst vector at which that happens,
+   and it is per item because the crossing point is: the two cutouts on the
+   horizontal axis are already within a box-width of the text edge and barely
+   move, while the two on the back layer come in almost to the centre. The
+   values in the array are derived against the h1's own 896x224 box and the
+   burst offsets as they resolve at 1440px; the responsive blocks below re-pin
+   those offsets, so at other widths the landing point drifts. It is a
+   cosmetic drift only — opacity reaches 0 at the same instant the path ends,
+   so a factor that is off still dissolves the cutout rather than parking it
+   over the copy. Making it exact at every width needs the crossing measured
+   at runtime, which this does not do.
+
+   ── Why both legs are 250ms on the same curve ──────────────────────────
+   The scale and the fade share one duration, one easing function and one
+   delay, so they cannot come apart: the cutout is at `scale(0.2)` and
+   `opacity: 0` on the same frame, at the boundary. `--ease-fountain-return`
+   is an ease-IN, which is what makes the shape read the way it does — the
+   first half of the clock is worth little distance, so the cutout crosses
+   mid-air at close to full size and full opacity, and only turns over to
+   shrink and fade in the last stretch, arriving at the edge already gone.
+   No `--burst-delay` on either leg: the return starts the instant the pointer
+   leaves. */
+.hero-heading-fountain:not(:hover):not(:focus-within) .hero-gift-cutout {
+  opacity: 0 !important;
+  transition:
+    opacity 250ms var(--ease-fountain-return) 0ms,
+    transform 250ms var(--ease-fountain-return) 0ms !important;
+}
+
+.hero-heading-fountain[data-gift-phase="exiting"]:not(:hover):not(:focus-within)
+  .hero-gift-cutout {
+  transform: translate(-50%, -50%)
+    translateX(calc(var(--burst-x) * var(--exit-factor)))
+    translateY(calc(var(--burst-y) * var(--exit-factor)))
+    scale(0.2) rotate(0deg) !important;
+}
+
+/* Phase three: the component's resting state, reached once the return leg
+   finishes. It does the one job the exit can no longer do for itself.
+
+   The exit above deliberately stops on the headline's perimeter, not on the
+   origin, so the cutouts are left part-way along their burst vectors when it
+   ends — which is invisible, but it is the wrong starting point for the next
+   reveal, and the next reveal starts from wherever they happen to be. So this
+   puts them back on the origin, and `transition: none` makes that a single
+   frame with nothing on screen to see it happen. It also drops the live 250ms
+   leg so no cutout sits holding a transition for as long as the pointer stays
+   away, and it is the state the next reveal has to be able to leave cleanly,
+   which is why only `onMouseEnter` hands control back to the stylesheet.
+
+   The transform is marked `!important` to match the exit target it is undoing:
+   the exit rule is also important, and while `[data-gift-phase="exiting"]` no
+   longer matches by this point, the two would otherwise be one refactor away
+   from a specificity fight. */
+.hero-heading-fountain[data-gift-phase="reset"]:not(:hover):not(:focus-within)
+  .hero-gift-cutout {
+  transition: none !important;
+  transform: translate(-50%, -50%) scale(0.2) rotate(0deg) !important;
+}
+
+/* Give the ring a wider, text-clearing footprint at tablet widths.
+
+   The upper bound is 1024px, not 1023px, and that is deliberate. The inline
+   clamps on each entry only start applying above this query, so leaving the
+   boundary at 1023 gave 1024px a one-pixel band where every cutout snapped
+   back from its pinned tablet position to its own clamp. At that single width
+   the ring reorganised: the back-layer pair landed 96px higher than either
+   neighbour and the Tote Bag swallowed a fifth of the keyboard. Widening the
+   band by one pixel makes 1024 continuous with 1023, which is already clean
+   for both new items. */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .hero-gift-cutout:nth-child(1) {
+    --burst-y: -11rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(2) {
+    --burst-x: 37vw !important;
+    --burst-y: -12rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(3) {
+    --burst-x: -40vw !important;
+  }
+
+  .hero-gift-cutout:nth-child(4) {
+    --burst-x: 40vw !important;
+  }
+
+  .hero-gift-cutout:nth-child(5) {
+    --burst-x: -40vw !important;
+    --burst-y: 13rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(6) {
+    --burst-x: 38vw !important;
+    --burst-y: 13rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(7) {
+    --burst-x: -35vw !important;
+    --burst-y: 4rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(8) {
+    --burst-x: 42vw !important;
+    --burst-y: 18rem !important;
+  }
+
+  /* Back layer. The Y floors are set from the front layer's own bottoms at
+     these widths, not guessed: the Notebook bottoms out near 284px and the
+     Headphones near 342px, and each back-layer box is half its own height
+     taller than that clearance needs. X tracks the Notebook's 40vw and the Tote
+     Bag's 38vw so the new pair stays in the same vertical columns.
+
+     The E-Ink's X is the midpoint of the two it sits under rather than a copy
+     of either: -37.5vw, between the Notebook's -40vw and the Water Bottle's
+     -35vw, so it stays centred in the gap between them in this band too. */
+  .hero-gift-cutout:nth-child(9) {
+    --burst-x: -37.5vw !important;
+    --burst-y: 23rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(10) {
+    --burst-x: 38vw !important;
+    --burst-y: 25rem !important;
+  }
+}
+
+/* Keep the widest side cutouts inside the viewport on narrow phones. */
+@media (max-width: 360px) {
+  .hero-heading-title {
+    font-size: clamp(1.3rem, 6.5vw, 1.5rem);
+  }
+
+  .hero-gift-cutout:nth-child(1) {
+    --burst-x: -25vw !important;
+  }
+
+  .hero-gift-cutout:nth-child(3) {
+    --burst-x: -24vw !important;
+  }
+
+  .hero-gift-cutout:nth-child(4) {
+    --burst-x: 24vw !important;
+  }
+
+  .hero-gift-cutout:nth-child(7) {
+    --burst-x: -30vw !important;
+    --burst-y: 3rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(8) {
+    --burst-x: 35vw !important;
+    --burst-y: 14rem !important;
+  }
+
+  /* Back layer. Only the Y is re-pinned here. Item 7 tightens to -30vw at this
+     size and item 5 keeps its own -36vw clamp, so the midpoint the E-Ink is
+     anchored to is -33vw — exactly what the max-width: 639px block above
+     already gives it, and repeating the value here would only be a second
+     place to keep in step. */
+  .hero-gift-cutout:nth-child(9) {
+    --burst-y: 6rem !important;
+  }
+
+  .hero-gift-cutout:nth-child(10) {
+    --burst-x: 30vw !important;
+    --burst-y: 7rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+
+  /* The load-triggered twin of the rule above, and it needs its own entry
+     because this block is scoped per component rather than blanketing the page
+     - a blanket would have caught it. Cancelled outright rather than shortened,
+     for the same reason as its sibling: this preference exists to stop motion,
+     not to make it quicker. `opacity: 1` and `transform: none` are stated
+     explicitly rather than left to the `from` keyframe falling away, because
+     `both` fill keeps that `opacity: 0` applied even after `animation: none`. */
+  .heading-enter > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hero-entrance {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .floating-nav-motion {
+    transition: none;
+  }
+
+  .hero-gift-cutout {
+    transition: none !important;
+  }
+
+  /* The fountain exit marks its own transition `!important`, and it outranks
+     the blanket `transition: none` directly above — source order does not save
+     that one, because importance is settled on specificity before order is
+     consulted. Without this the return would animate for exactly the users
+     who asked it not to, and since the exit rule no longer tests
+     `[data-gift-phase]`, the blanket is outranked at rest too.
+
+     The selector is the exit selector verbatim, so the two cancel on equal
+     terms and only the ordering in the file separates them. The
+     `:not(:focus-within)` guard is repeated rather than dropped: without it
+     this would also cancel the reveal's transition, and the cutouts would pop
+     to their burst positions instead of flying out. */
+  .hero-heading-fountain:not(:hover):not(:focus-within) .hero-gift-cutout {
+    transition: none !important;
+  }
+
+  .hero-gift-float {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* Reduced motion gets one static set of six wordmarks rather than the
+     duplicated, repeated track used to mask the infinite loop. */
+  .client-logo-track-copy--duplicate {
+    display: none;
+  }
+
+  .client-logo-track-copy:not(.client-logo-track-copy--duplicate)
+    > :nth-child(n + 7) {
+    display: none;
+  }
+
+  /* Testimonials marquee: same reasoning as the showcase strip below —
+     infinite auto-scroll is exactly what this preference exists to stop, so
+     the animation is removed outright rather than slowed. What remains is one
+     copy per column: a plain, unmasked, unclipped three-column grid of the
+     same fifteen cards, which is a perfectly good static testimonial wall. */
+  .testimonials-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .testimonials-marquee-copy--duplicate {
+    display: none;
+  }
+
+  .testimonials-marquee-column {
+    height: auto;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  /* Same for the mobile horizontal deck. The animation comes out rather than
+     slowing down, one copy per row — but unlike the vertical fallback above,
+     this one CANNOT simply be left clipped, and the reason is the card width.
+     A row-copy is about 1,380px of cards, so stopping the track without also
+     opening the row would leave a reader on a 375px screen looking at the first
+     260px of it and no way to reach the other four. The row becomes an ordinary
+     swipeable strip instead: `overflow-x: auto`, the mask dropped (a static
+     scroller does not need its content faded, and the fade would otherwise
+     hide the card you had just swiped to), and the scrollbar left visible
+     because here the scroll IS the interaction rather than a side effect of
+     one. */
+  .testimonials-marquee-row {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .testimonials-marquee-row-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .testimonials-marquee-row-copy--duplicate {
+    display: none;
+  }
+
+  /* Same for the product showcase: the animation is the whole point of a
+     marquee, so it is removed outright rather than slowed. What remains is one
+     static, evenly spaced set of the nine products, still scrollable
+     horizontally on narrow viewports. */
+  .showcase-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .showcase-marquee-copy--duplicate {
+    display: none;
+  }
+
+  .showcase-marquee-copy:not(.showcase-marquee-copy--duplicate)
+    > :nth-child(n + 10) {
+    display: none;
+  }
+
+  /* The tile zoom is decoration, and the reduced-motion block is scoped
+     per-component rather than blanketing the page, so it needs its own entry
+     here or a 500ms scale would animate for exactly the users who asked it not
+     to. `transform: none` rather than `scale(1)` — the two paint identically
+     at rest, but `none` also drops the compositing layer the zoom created. */
+  .showcase-marquee-card > img {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+  /* HRIS & ops marquee: same reasoning as the showcase strip above. Infinite
+     auto-scroll is exactly what this preference exists to stop, so the
+     animation is removed outright rather than slowed. What remains is one
+     static, centred, wrapped row per list.
+
+     Everything here lives in CSS rather than in `motion-reduce:` utilities on
+     the markup, which is the testimonials and showcase precedent: the track is
+     the thing whose geometry has to change, and keeping the animation, the
+     geometry change and the de-duplication in one block means the three cannot
+     drift apart.
+
+     Reduced motion collapses THREE levels down to one: the animation off, copy
+     B gone, and runs 2-4 gone. That is why `.hris-marquee-run--repeat` is a
+     named class rather than the house `:nth-child(n + N)` trick - the item
+     count differs between the two rows (7 and 6), and a rule whose job is
+     "hide everything past one copy" must not have to know whether one copy is
+     seven pills or six. */
+  .hris-marquee-track {
+    animation: none !important;
+    transform: none !important;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hris-marquee-copy--duplicate {
+    display: none;
+  }
+
+  .hris-marquee-run--repeat {
+    display: none;
+  }
+
+  /* The copies and runs are `shrink-0` for the animation - a flexible half
+     would break the -50% seam, which is the one thing this band cannot lose.
+     With nothing moving that constraint is exactly backwards: it would force a
+     1,080px row to overflow a 320px phone and sit half off screen. Release it
+     and let the static row wrap instead. */
+  .hris-marquee-copy,
+  .hris-marquee-run {
+    flex-shrink: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  /* The edge fade exists to soften pills entering and leaving. With nothing
+     moving there is nothing to soften, and it would only dim the first and
+     last pill of a static row for no reason. */
+  .hris-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  /* The hover lift and glow are decoration on a now-stationary row, and this
+     reduced-motion block is scoped per component rather than blanketing the
+     page, so they need their own entry here or a 300ms transform would run for
+     exactly the users who asked it not to. */
+  .hris-marquee-pill {
+    transform: none !important;
+    transition: none !important;
+  }  .hris-marquee-pill {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Automation flow diagram. Both loops are decorative and both are infinite,
+     so they are stopped rather than slowed - which is the same call the marquee
+     makes and for the same reason.
+
+     The particles keep their dash pattern. Killing the animation leaves a static
+     dashed line, and that still reads correctly as "data moving this way" - a
+     solid stroke would read as a plain connecting wire and lose the meaning. The
+     base stroke is already there, so a still diagram is still a legible diagram
+     rather than three boxes with nothing between them.
+
+     The pulse rings are left at their rest size and a fixed low opacity instead
+     of being hidden: `display: none` would collapse the 144px disc container to
+     nothing and shift the engine label up, because the rings are `inset-0`
+     siblings that still occupy layout. */
+  .flow-particle {
+    animation: none !important;
+  }
+
+  .flow-pulse-ring {
+    animation: none !important;
+    transform: none !important;
+    opacity: 0.25 !important;
+  }
+
+/* ------------------------------------------------------------------
+   FONT VARIANTS (kept separate so utilities favour the theme vars,
+   which are injected by next/font/google on <html>)
+   ------------------------------------------------------------------ */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-plus-jakarta-sans), "Plus Jakarta Sans",
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-grotesk: var(--font-space-grotesk), ui-sans-serif, system-ui,
+    sans-serif;
+}
+
+/* ==================================================================
+   CUSTOM UTILITIES — @utility (complex, reusable visual rules)
+   ================================================================== */
+
+/* Paper grain: SVG feTurbulence noise at ~3% opacity, radius-aware */
+@utility texture-paper {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='4'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+  }
+}
+
+/* Linen weave: ultra-fine noise for warm-grey section backgrounds */
+@utility texture-linen {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='240'%20height='240'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.55'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+  }
+}
+
+/* Parallax layer baseline — seeds every scroll-linked hero plane with
+   `will-change: transform` + a `translate3d(0, 0, 0)` rest transform so the
+   browser promotes each layer to its own GPU compositor from first paint.
+   framer-motion then overrides `transform` inline while scrubbing, keeping
+   the hero at a smooth 60fps with no 2D repaints. */
+@utility parallax-layer {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* ==================================================================
+   HEADLINE ACCENT WORD  (the single source of truth)
+   ------------------------------------------------------------------
+   One class for every highlighted word or phrase inside a headline,
+   site-wide: hero eyebrows' rotating phrases, section H2s, FAQ headers,
+   CTA strips, the 404 page. Before this existed the same job was done four
+   different ways across ~40 call sites — `font-medium text-accent-600`
+   (28), `font-serif font-medium italic text-copper` (6, Playfair),
+   `text-brand-green-400/700` (2) and `not-italic` (1) — which is why the
+   accents read as unrelated to each other.
+
+   The four properties are fixed here rather than at each call site:
+
+     font-style  italic      the accent signal
+     font-weight 500         LIGHTER than the 800 headline it sits in, so the
+                             word reads as an accent rather than as more
+                             headline. Chosen over `inherit`, which inside an
+                             800 heading resolves back to 800 and leaves the
+                             word looking bold — the thing this pass exists
+                             to fix.
+     color       the brand primary token, never a literal. #a83b24 measures
+                 5.43-6.33:1 on every light surface used here, where the
+                 `text-accent-600` it replaces was 3.27-3.81:1 and failing
+                 AA. So this is also a contrast fix, not just a colour one.
+     font-family inherit     the accent must never introduce a second
+                             typeface. This is what retired the Playfair
+                             `font-serif` overrides.
+
+   `accent-em--on-dark` is the same treatment for `bg-forest` sections, where
+   the base token is 1.64:1 and unusable. */
+@utility accent-em {
+  font-style: italic;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--color-brand-primary);
+}
+
+@utility accent-em--on-dark {
+  font-style: italic;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--color-brand-primary-tint);
+}
+
+/* Third dark-surface variant, for the charcoal canvas (#111827). Identical
+   four fixed properties — the accent word is still one class, never a
+   hand-rolled `italic font-medium text-[…]` at a call site. Only the colour
+   differs, because only the colour can: see --color-brand-primary-canvas for
+   why neither of the two variants above is usable on this canvas. */
+@utility accent-em--on-canvas {
+  font-style: italic;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--color-brand-primary-canvas);
+}
+
+/* Ribbon underline: animated swipe used on ghost links & CTAs */
+@utility link-ribbon {
+  background-image: linear-gradient(var(--color-accent-600), var(--color-accent-600));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 0% 1.5px;
+  padding-bottom: 2px;
+  transition:
+    background-size 0.35s var(--ease-premium),
+    color 0.2s ease;
+
+  &:hover {
+    background-size: 100% 1.5px;
+  }
+}
+
+/* Panel cross-fade for tab/accordion widgets (`IndustriesList`).
+   Deliberately a one-shot keyframe rather than framer-motion: the whole effect
+   is a fade, the widget already re-mounts its panel on selection, and adding
+   the animation library here would buy nothing a 4-line keyframe does not.
+   Unlayered for the same reason as `.reveal-on-scroll` — it must not lose to
+   a component's own `transition-*` utilities. */
+@keyframes panelFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.panel-fade {
+  animation: panelFade 0.4s var(--ease-premium) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-fade {
+    animation: none;
+  }
+}
+
+/* Auto-advance progress rule for the industries tab column.
+
+   `animation-duration` is deliberately NOT declared here — `IndustriesList`
+   passes it inline from its `ADVANCE_MS` constant, so the bar and the
+   `setInterval` that moves the selection cannot drift apart. They are two
+   systems agreeing on one number, and a mismatch would show as a rule that
+   resets early or a tab that flips before the bar is full.
+
+   `linear` and not an ease: this bar encodes elapsed time, so any easing would
+   make the fill rate lie about how long is left.
+
+   `transform-origin: top` + `scaleY` rather than `height`, so the fill
+   animates on the compositor and never triggers layout. */
+@keyframes tab-progress {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.tab-progress-fill {
+  transform-origin: top;
+  animation-name: tab-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-progress-fill {
+    animation: none;
+  }
+}
+
+/* Floating pill header — a clean, solid white surface lifted off the warm
+   hero canvas with a hairline rim and a soft two-layer elevation shadow.
+   Because the fill is fully opaque, no backdrop blur is needed. The component
+   continues to control the resting, compact and hidden offsets/transforms. */
+@utility glass-nav {
+  background-color: #ffffff;
+  border: 1px solid rgb(0 0 0 / 0.06);
+  box-shadow:
+    0 4px 20px rgb(0 0 0 / 0.08),
+    0 1px 3px rgb(0 0 0 / 0.05);
+}
+
+/* Highlight sweep for emphasis surfaces (value cards, quote blocks) */
+@utility sheen {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      rgb(196 106 74 / 0.05) 48%,
+      transparent 62%
+    );
+    transform: translateX(-100%);
+    transition: transform 1.1s var(--ease-premium);
+    pointer-events: none;
+  }
+
+  &:hover::before {
+    transform: translateX(100%);
+  }
+}
+
+/* Curated stat numerals — Space Grotesk with tabular figures on dark stone */
+@utility stat-numeral {
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* How-it-works numerals use the same brick-red stat hover as the editorial
+   value rows. Their transition class is shared, so the scroll-reveal timing
+   still wins until the entrance finishes. */
+.how-it-works-step:hover .step-number,
+.how-it-works-step .step-number:hover {
+  color: var(--color-brick-red);
+}
+
+/* Shared hover color easing for stat numerals */
+@utility stat-color-transition {
+  transition: color 0.3s ease-in-out;
+}
+
+/* Explicit stat hover target — works for direct number hover and card hover. */
+.stat-color-transition:hover,
+.group:hover .stat-color-transition {
+  color: var(--color-brick-red);
+}
+
+/* ==================================================================
+   HEADER NAV LINK STATES
+   ------------------------------------------------------------------
+   One place for link state so the desktop pill nav and the mobile panel
+   cannot drift apart. Deliberately UNLAYERED: Tailwind's text-colour
+   utilities live in @layer utilities, and unlayered rules outrank every
+   layer, so `.active` wins over whatever colour utility a link happens to
+   carry without each call site having to unset it.
+
+   Only `:hover` and the active state are set here. The resting colour is
+   left to each element's own utility (`text-walnut` on desktop, `text-charcoal`
+   in the mobile panel) so one class works for both without flattening the
+   two treatments together.
+
+   The active/hover colour was moved off the brand green entirely — green is
+   now reserved for trust and success signals elsewhere in the system.
+   ================================================================== */
+.nav-link {
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-brand-primary, #c84b31);
+}
+
+.nav-link.active,
+.nav-link[aria-current="page"] {
+  color: var(--color-brand-primary, #c84b31) !important;
+  font-weight: 600;
+}
+
+/* The active underline is a child <span>, so it cannot inherit the link's
+   `color` automatically — `currentColor` ties it to whatever the rule above
+   resolved, which keeps the indicator and the label from ever disagreeing. */
+.nav-link .nav-link-underline {
+  background-color: currentColor;
+}
+
+/* ==================================================================
+   BASE
+   ================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Hard no-horizontal-scroll guard: `clip` never creates a scroll
+       container, so the sticky header keeps working (unlike `hidden`). */
+    overflow-x: clip;
+  }
+
+  body {
+    /* text-taupe now carries the spec'd body slate (#4b5563), so inherited
+       text without an explicit colour lands on 7.19:1 rather than near-black.
+       Headings opt back up to --color-charcoal via the h1–h6 rule below. */
+    @apply bg-mist font-sans text-taupe antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    @apply bg-accent-600 text-mist;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display text-charcoal;
+    /* One heading treatment site-wide. These are base-layer declarations, so a
+       `text-h2` size utility (which also carries 1.15 / -0.035em) wins, and so
+       does any deliberate per-call-site override. The 29 call sites that used
+       to pin `font-semibold` or a looser `leading-*` on a heading were
+       stripped so this actually lands. */
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent-600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ==================================================================
+   BUDGET ESTIMATOR — custom copper-thumb range slider
+   ================================================================== */
+@layer components {
+  /* Track background is painted inline (copper → sand gradient fill) so
+     the active portion follows the thumb exactly as the value changes. */
+  .budget-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: var(--radius-pill);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .budget-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2.5px solid var(--color-copper);
+    box-shadow: 0 2px 10px rgb(194 65 12 / 0.35);
+    cursor: grab;
+    transition:
+      transform 0.2s var(--ease-snappy),
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .budget-range::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 2px 14px rgb(194 65 12 / 0.45);
+  }
+
+  .budget-range:active::-webkit-slider-thumb {
+    cursor: grabbing;
+    transform: scale(1.15);
+    border-color: var(--color-accent-700);
+  }
+
+  .budget-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2.5px solid var(--color-copper);
+    box-shadow: 0 2px 10px rgb(194 65 12 / 0.35);
+    cursor: grab;
+    transition: transform 0.2s var(--ease-snappy);
+  }
+
+  .budget-range::-moz-range-thumb:hover {
+    transform: scale(1.15);
+  }
+
+  .budget-range:active::-moz-range-thumb {
+    cursor: grabbing;
+  }
+
+  .budget-range:focus-visible {
+    outline: 2px solid var(--color-accent-600);
+    outline-offset: 4px;
+  }
+
+  /* Equity: keep interactive elements desaturated for prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .budget-range::-webkit-slider-thumb,
+    .budget-range::-moz-range-thumb {
+      transition: none;
+    }
+  }
+}

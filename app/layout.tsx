@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 import type { Metadata } from "next";
 import {
   Inter,
@@ -13,11 +14,6 @@ import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
  *   Display  Plus Jakarta Sans 400–800       → every heading, ExtraBold
  *   Sans     Inter             400–700       → body, navigation, UI
  *   Numbers  Space Grotesk     400 / 500 / 700 → stats, prices, counts
- *
- * Each font exposes a CSS variable mapped into Tailwind v4's @theme
- * (--font-display / --font-sans / --font-grotesk) via `@theme inline` in
- * app/globals.css, then consumed as `font-display`, `font-sans`,
- * `font-grotesk` utilities.
  */
 
 const inter = Inter({
@@ -47,7 +43,6 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  // Use your live Netlify URL as the base
   metadataBase: new URL("https://fulfillnest.netlify.app"),
   title: {
     default: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
@@ -75,8 +70,7 @@ export const metadata: Metadata = {
     url: "https://fulfillnest.netlify.app/",
     images: [
       {
-        // IMPORTANT: absolute URL so WhatsApp can fetch it
-        url: "https://fulfillnest.netlify.app/og-image.jpg",
+        url: "https://fulfillnest.netlify.app/og-preview.jpg",
         width: 1200,
         height: 630,
         alt: "Fulfill Nest — Thoughtful rewards. Delivered with care.",
@@ -88,7 +82,7 @@ export const metadata: Metadata = {
     title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     description:
       "Thoughtful rewards, delivered with care. Premium corporate gifting & employee recognition solutions.",
-    images: ["https://fulfillnest.netlify.app/og-image.jpg"],
+    images: ["https://fulfillnest.netlify.app/og-preview.jpg"],
   },
 };
 

@@ -288,10 +288,13 @@ export function Footer() {
       className="texture-paper border-t border-dark-line bg-[#36433B] text-[#F7F4EB]"
     >
       <div className="mx-auto max-w-7xl px-6 py-20">
-        {/* ── TOP ROW: Brand Logo + Tagline ──
-            Left-aligned on its own dedicated row, leaving open space to the right. */}
-        <div className="mb-8 grid w-full grid-cols-2 gap-8 items-stretch text-left md:mb-12 md:flex md:justify-between md:gap-8">
-          <div className="flex flex-col items-start text-left w-full">
+        {/* ── FOOTER BODY GRID ──
+            Mobile: brand + contact share row 1, link columns span row 2.
+            md: brand full-width row 1, links row 2 (3 across).
+            lg: brand left (3 of 12), links right (9 of 12, 3 across).
+            xl: brand 2 of 12, links 10 of 12, 5 across. */}
+        <div className="grid grid-cols-2 gap-8 items-stretch text-left md:grid-cols-2 md:gap-12 lg:grid-cols-12 lg:gap-12">
+          <div className="flex flex-col items-start text-left w-full md:col-span-2 lg:col-span-3 xl:col-span-2">
             {/* `mx-auto` CENTRES THE LOCKUP, and only the lockup. The brief's
                 ask was to take the logo from flush-left to centred "within its
                 quadrant", and this is the narrowest reading that does exactly
@@ -420,10 +423,9 @@ export function Footer() {
             </ul>
             </div>
           </div>
-        </div>
-
-        {/* Balanced 4-Column Grid: all navigation columns + Contact Us */}
-        <div className="grid w-full grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4 md:gap-8 text-left">
+          {/* Link columns + Contact — 2 across on mobile, 3 from `md`, 5 from
+              `xl`; the right-hand block of the outer grid from `lg` up. */}
+          <div className="col-span-2 grid grid-cols-2 gap-x-6 gap-y-8 md:col-span-2 md:grid-cols-3 lg:col-span-9 xl:col-span-10 xl:grid-cols-5 xl:gap-x-4">
             {columns.map((column) => (
               <nav key={column.heading} aria-label={column.heading}>
               <h3 className={columnHeadingClass}>{column.heading}</h3>
@@ -506,6 +508,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
+        </div>
         </div>
 
         {/* ── BRAND STATEMENT BANNER ──

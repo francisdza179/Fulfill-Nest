@@ -96,6 +96,7 @@ export default function NotFound() {
       <main>
         <ChildHero
           layout="center"
+          ribbons={false}
           eyebrow="Error 404"
           title={
             <>

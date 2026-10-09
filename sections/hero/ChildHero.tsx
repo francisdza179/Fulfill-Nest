@@ -85,6 +85,12 @@ interface ChildHeroProps {
    */
   surface?: "canvas" | "light";
   /**
+   * Toggles the angled ribbon SVG layer behind the hero copy. Defaults to
+   * true; pass `false` for a hero that wants the plain canvas gradient
+   * without the ribbon strokes.
+   */
+  ribbons?: boolean;
+  /**
    * Selects the copy/visual column ratio, and everything that ratio forces:
    * the lead measure, the stacked gap, the split breakpoint, and the vertical
    * rhythm.
@@ -258,6 +264,7 @@ export function ChildHero({
   layout = "split",
   canvas = "decorated",
   surface = "canvas",
+  ribbons = true,
   columns = "editorial",
   className = "",
 }: ChildHeroProps) {
@@ -270,6 +277,7 @@ export function ChildHero({
       className={className}
       decorative={canvas !== "flat"}
       surface={surface}
+      ribbons={ribbons}
     >
       <div
         className={`mx-auto max-w-7xl px-5 md:px-6 ${

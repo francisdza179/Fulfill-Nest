@@ -101,6 +101,7 @@ export function HeroCanvas({
   className = "",
   decorative = true,
   surface = "canvas",
+  ribbons = true,
 }: {
   children: ReactNode;
   className?: string;
@@ -133,6 +134,17 @@ export function HeroCanvas({
    * rather than as a seam.
    */
   surface?: "canvas" | "light";
+  /**
+   * Toggles the angled ribbon SVG layer (`HeroRibbons`) independently of the
+   * rest of the decorative field. Defaults to true.
+   *
+   * The ribbons are the loudest single element in the decorated canvas —
+   * three 54–120px-wide curved strokes sweeping the full hero — and on a
+   * centred text-only hero (the 404) they sit directly behind the headline
+   * and read as visual noise rather than as depth. Opting out keeps the
+   * wash / sage bloom / copper pool gradient and drops only the strokes.
+   */
+  ribbons?: boolean;
 }) {
   const surfaceClass = surface === "light" ? "bg-bg-canvas" : "bg-canvas";
 
@@ -160,7 +172,7 @@ export function HeroCanvas({
           </div>
 
           <div className="pointer-events-none absolute inset-x-8 top-24 bottom-20 overflow-hidden">
-            <HeroRibbons />
+            {ribbons ? <HeroRibbons /> : null}
           </div>
         </>
       ) : null}

@@ -18,23 +18,8 @@ import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
  * (--font-display / --font-sans / --font-grotesk) via `@theme inline` in
  * app/globals.css, then consumed as `font-display`, `font-sans`,
  * `font-grotesk` utilities.
- *
- * Plus Jakarta Sans replaces Albert Sans as the display face because the type
- * system calls for an 800 ExtraBold on all headings, and Albert Sans stops at
- * 700 — it could only have faked the extra weight. Space Grotesk is used only
- * for stat numerals, which is not the heading or body role.
- *
- * Playfair Display has been removed. It existed for exactly one thing: the
- * inline italic accent word inside headlines, via `font-serif` on the `<em>`.
- * Those accents are now the shared `accent-em` utility, which sets
- * `font-family: inherit` so an accent can never introduce a second typeface.
- * With 0 call sites left, keeping the family meant 4 woff2 files preloaded and
- * a live @font-face block for glyphs nothing rendered.
- *
- * Inter keeps its 700 as well as the specified 400/500/600: several UI
- * elements render bold at `font-sans`, and dropping 700 would make the browser
- * synthesise a smeared faux bold instead of using the real face.
  */
+
 const inter = Inter({
   subsets: ["latin"],
   style: ["normal"],
@@ -44,7 +29,6 @@ const inter = Inter({
   fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
 });
 
-/** Display face for h1–h6. No italic set exists for this family. */
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   style: ["normal"],
@@ -63,7 +47,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://fulfillnest.com"),
+  // Use your live Netlify URL as the base
+  metadataBase: new URL("https://fulfillnest.netlify.app"),
   title: {
     default: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     template: "%s | Fulfill Nest",
@@ -87,15 +72,23 @@ export const metadata: Metadata = {
     title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     description:
       "Thoughtful rewards, delivered with care. Premium corporate gifting & employee recognition solutions.",
-    url: "/",
+    url: "https://fulfillnest.netlify.app/",
     images: [
       {
-        url: "/og-image.jpg",
+        // IMPORTANT: absolute URL so WhatsApp can fetch it
+        url: "https://fulfillnest.netlify.app/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Fulfill Nest — Thoughtful rewards. Delivered with care.",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
+    description:
+      "Thoughtful rewards, delivered with care. Premium corporate gifting & employee recognition solutions.",
+    images: ["https://fulfillnest.netlify.app/og-image.jpg"],
   },
 };
 

@@ -274,7 +274,7 @@ export function HeroFlanked() {
             <div className="hero-cta-social-proof-group relative z-10 mt-6 w-full">
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <ButtonLink href="/contact" variant="solidAccent">
-                  Book a consultation
+                  Book a free consultation
                 </ButtonLink>
                 <ButtonLink href="/gifts" variant="secondary">
                   Explore corporate gifting

@@ -4,3 +4,32 @@
   # Next 15, so it is NOT appended here — running it would fail the build.
   command = "next build"
   publish = "out"
+
+# ── /services -> /gifts ─────────────────────────────────────────────────────
+# This used to be a `permanentRedirect()` in `app/services/page.tsx`. Static
+# export cannot emit HTTP redirects: the build wrote `out/services.html`
+# containing Next's `__next_error__` shell, which Netlify then served with a
+# 200 status. A content-free page at HTTP 200 is a soft-404 — indexable, and it
+# silently swallowed every inbound link to /services (hero CTAs shared in decks,
+# bios and emails) without passing any equity to /gifts.
+#
+# The page file has been deleted rather than left in place, so the build emits
+# nothing at this path. Netlify applies `[[redirects]]` before the static file
+# lookup, and the rule is checked ahead of the (now absent) `services.html`.
+#
+# 308 and not 301 is deliberate: 308 preserves the method and signals a
+# permanent move, which is what the rename was, so the old URL's equity follows
+# to /gifts instead of being treated as a temporary detour.
+[[redirects]]
+  from = "/services"
+  to = "/gifts"
+  status = 308
+
+# Netlify normalises the trailing slash before matching, so this covers both
+# /services and /services/. Declared explicitly because a rule that only matches
+# one of the two is the kind of thing that goes unnoticed until someone reports
+# a broken link.
+[[redirects]]
+  from = "/services/"
+  to = "/gifts"
+  status = 308

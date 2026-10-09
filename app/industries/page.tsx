@@ -7,7 +7,8 @@ import { Testimonials } from "@/sections/Testimonials";
 import { IndustriesFaq } from "@/sections/IndustriesFaq";
 import { CtaBand } from "@/sections/CtaBand";
 import { Footer } from "@/sections/Footer";
-import { breadcrumbSchema, JsonLd } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, JsonLd } from "@/lib/schema";
+import { industryFaqs } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Industries",
@@ -36,6 +37,8 @@ export default function IndustriesPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema([{ name: "Industries", path: "/industries" }])} />
+      {/* `IndustriesFaq` below renders this array. */}
+      <JsonLd data={faqPageSchema(industryFaqs)} />
       <Navigation />
       <main>
         <IndustriesHero />

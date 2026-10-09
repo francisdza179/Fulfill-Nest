@@ -8,7 +8,8 @@ import { TrustBand } from "@/sections/TrustBand";
 import { Testimonials } from "@/sections/Testimonials";
 import { CtaBand } from "@/sections/CtaBand";
 import { Footer } from "@/sections/Footer";
-import { breadcrumbSchema, JsonLd } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, JsonLd } from "@/lib/schema";
+import { pricingFaqs } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -37,6 +38,8 @@ export default function PricingPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema([{ name: "Pricing", path: "/pricing" }])} />
+      {/* `PricingFaq` below renders this array. */}
+      <JsonLd data={faqPageSchema(pricingFaqs)} />
       <Navigation />
       <main>
         <PricingHero />

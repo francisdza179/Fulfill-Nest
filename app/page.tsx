@@ -12,10 +12,12 @@ import { CtaBand } from "@/sections/CtaBand";
 import { Footer } from "@/sections/Footer";
 import {
   JsonLd,
+  faqPageSchema,
   organizationSchema,
   webSiteSchema,
 } from "@/lib/schema";
 import { values, homeFaqs } from "@/lib/data";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
@@ -54,10 +56,10 @@ export const metadata: Metadata = {
     title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     description:
       "Thoughtfully curated corporate gifting with end-to-end execution.",
-    url: "https://fulfillnest.netlify.app/",
+    url: absoluteUrl("/"),
     images: [
       {
-        url: "https://fulfillnest.netlify.app/og-preview.jpg",
+        url: absoluteUrl("/og-preview.jpg"),
         type: "image/jpeg",
         width: 1200,
         height: 630,
@@ -70,7 +72,7 @@ export const metadata: Metadata = {
     title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     description:
       "Thoughtfully curated corporate gifting with end-to-end execution.",
-    images: ["https://fulfillnest.netlify.app/og-preview.jpg"],
+    images: [absoluteUrl("/og-preview.jpg")],
   },
 };
 
@@ -79,6 +81,10 @@ export default function HomePage() {
     <>
       <JsonLd data={organizationSchema()} />
       <JsonLd data={webSiteSchema()} />
+      {/* Built from the same `homeFaqs` array the `FaqList` accordion below
+          renders, so the structured data cannot drift from the visible
+          questions. See `faqPageSchema` for the Google rich-results caveat. */}
+      <JsonLd data={faqPageSchema(homeFaqs)} />
       <Navigation />
       <main>
         <Hero />

@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { absoluteUrl } from "@/lib/site";
 
 /**
  * Font system — "Editorial on the surface, functional underneath."
@@ -42,8 +43,16 @@ const spaceGrotesk = Space_Grotesk({
   fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
 });
 
+/* Absolute URLs are required for `og:image` / `twitter:image`: WhatsApp and
+   LinkedIn resolve relative values unreliably, and WhatsApp often refuses the
+   preview entirely rather than resolving it. `absoluteUrl()` also keeps this
+   file in step with the JSON-LD in `lib/schema.tsx`, which read the same
+   `SITE_URL`. Do not reintroduce a literal origin here — see `lib/site.ts`. */
+const SITE = absoluteUrl();
+const OG_IMAGE = absoluteUrl("/og-preview.jpg");
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://fulfillnest.netlify.app"),
+  metadataBase: new URL(SITE),
   title: {
     default: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     template: "%s | Fulfill Nest",
@@ -67,10 +76,11 @@ export const metadata: Metadata = {
     title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     description:
       "Thoughtful rewards, delivered with care. Premium corporate gifting & employee recognition solutions.",
-    url: "https://fulfillnest.netlify.app/",
+    url: SITE,
     images: [
       {
-        url: "https://fulfillnest.netlify.app/og-preview.jpg",
+        url: OG_IMAGE,
+        type: "image/jpeg",
         width: 1200,
         height: 630,
         alt: "Fulfill Nest — Thoughtful rewards. Delivered with care.",
@@ -82,7 +92,7 @@ export const metadata: Metadata = {
     title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     description:
       "Thoughtful rewards, delivered with care. Premium corporate gifting & employee recognition solutions.",
-    images: ["https://fulfillnest.netlify.app/og-preview.jpg"],
+    images: [OG_IMAGE],
   },
 };
 

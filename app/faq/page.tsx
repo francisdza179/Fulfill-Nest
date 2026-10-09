@@ -4,7 +4,8 @@ import { PageHero } from "@/sections/PageHero";
 import { FaqKnowledgeBase } from "@/sections/FaqKnowledgeBase";
 import { CtaBand } from "@/sections/CtaBand";
 import { Footer } from "@/sections/Footer";
-import { breadcrumbSchema, JsonLd } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, JsonLd } from "@/lib/schema";
+import { faqs } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "FAQs",
@@ -33,6 +34,9 @@ export default function FaqPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema([{ name: "FAQs", path: "/faq" }])} />
+      {/* `FaqKnowledgeBase` below renders exactly this array, so the Q&A in the
+          structured data is the Q&A on the page. */}
+      <JsonLd data={faqPageSchema(faqs)} />
       <Navigation />
       <main>
         {/* Centred, flat, no visual — the same prose-page treatment as /terms

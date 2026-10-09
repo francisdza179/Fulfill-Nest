@@ -134,14 +134,14 @@ const columns = [
          correct as it stands - a reader following either label lands on the
          section that label names - and the earlier note counting "the two
          /about anchors that DO resolve" is now stale by one. */
-      { label: "How we fulfil", href: "/#how-it-works" },
-      { label: "Our values", href: "/about#values" },
+      { label: "How We Fulfill", href: "/#how-it-works" },
+      { label: "Our Values", href: "/about#values" },
     ],
   },
   {
     heading: "Support & Legal",
     links: [
-      { label: "Contact us", href: "/contact" },
+      { label: "Contact Us", href: "/contact" },
       { label: "Privacy Policy", href: "/privacy" },
       /* RENAMED from "Terms & Conditions" to "Terms of Service", which is what
          the page has actually called itself for a while - the document title, the

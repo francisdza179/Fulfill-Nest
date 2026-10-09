@@ -26,19 +26,51 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  /* Homepage-level openGraph / twitter, spelled out in full rather than
+     inherited from the root layout.
+
+     Next.js does NOT deep-merge `openGraph` — a page-level `openGraph` replaces
+     the layout's wholesale, so a partial override here would silently drop
+     `siteName` and any field not restated. Every field is therefore written out.
+
+     The image URL is ABSOLUTE. WhatsApp and LinkedIn both resolve `og:image`
+     against the page URL when it is relative, which works in a browser but is
+     unreliable on WhatsApp — it frequently refuses to fetch the preview at all
+     rather than resolving the relative path. `metadataBase` in the root layout
+     already covers absolute enrichment, but the literal URL removes any runtime
+     dependency on it.
+
+     `type` is `website` (not the default `article`) so the share renders as a
+     site preview rather than a story card, and `og:image:type` is stated
+     explicitly because WhatsApp keys its rendering decision off the MIME hint
+     more than off the file extension.
+
+     twitter.card is `summary_large_image`, which is what makes these three
+     platforms render the large preview card rather than a small square
+     thumbnail. */
   openGraph: {
-    title: "Fulfill Nest — Thoughtful rewards. Delivered with care.",
+    type: "website",
+    siteName: "Fulfill Nest",
+    title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
     description:
-      "Premium corporate gifting, employee recognition and fulfilment services — curated with intention.",
-    url: "/",
+      "Thoughtfully curated corporate gifting with end-to-end execution.",
+    url: "https://fulfillnest.netlify.app/",
     images: [
       {
-        url: "/hero-index.jpg",
-        width: 1600,
-        height: 1000,
-        alt: "Thoughtfully packed corporate gift boxes",
+        url: "https://fulfillnest.netlify.app/og-preview.jpg",
+        type: "image/jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fulfill Nest — Premium Corporate Gifting & Employee Recognition",
+    description:
+      "Thoughtfully curated corporate gifting with end-to-end execution.",
+    images: ["https://fulfillnest.netlify.app/og-preview.jpg"],
   },
 };
 

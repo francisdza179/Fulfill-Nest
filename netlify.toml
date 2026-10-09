@@ -1,12 +1,6 @@
 [build]
-  command = "npm run build"
-  publish = ".next"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
-[functions]
-  node_bundler = "esbuild"
-
-[dev]
-  framework = "next"
+  # `output: "export"` in next.config.ts makes `next build` emit the static site
+  # directly into `out/`. The separate `next export` command was removed in
+  # Next 15, so it is NOT appended here — running it would fail the build.
+  command = "next build"
+  publish = "out"

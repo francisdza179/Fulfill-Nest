@@ -20,7 +20,7 @@ Future agents MUST respect these rules unless explicitly directed otherwise by t
 app/          Next.js App Router pages & route stubs (page.tsx, layout.tsx, not-found.tsx)
 components/   Small reusable UI primitives (Button, Card, Input, ...)
 sections/     Large layout blocks (Hero, Features, Footer, Navigation, ...)
-public/       Static assets (favicon.png, og-image.jpg, ...)
+public/       Static assets (favicon.png, og-preview.jpg, ...)
 ```
 
 - **Import direction is strictly one-way:**

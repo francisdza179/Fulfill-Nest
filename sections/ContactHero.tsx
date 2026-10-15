@@ -149,7 +149,7 @@ export function ContactHero() {
       eyebrow="Get in touch"
       title={
         <>
-          Let&rsquo;s deliver something{" "}
+          Let&rsquo;s deliver something&nbsp;
           <RotatingCubeText
             phrases={BUILD_WORDS}
             /* The word is the last token of the sentence, so the reserved box
@@ -162,8 +162,13 @@ export function ContactHero() {
                vertically, on a loop.
 
                `align="start"` keeps the slack that reservation creates to the
-               right of the word, so it stays flush after "something " instead
-               of centring an 8-character word inside a 12-character box.
+               right of the word, so it stays flush at the start of its line
+               instead of centring an 8-character word inside a 12-character
+               box. `something&nbsp;` glues the word to "something" while the
+               pair still fits on one line; at desktop widths the reserved box
+               is too wide for that, so the word wraps to a line of its own —
+               where `align="start"` is what holds it flush left, with no
+               indent ahead of it.
 
                No timing props: the component's defaults (4s hold / 0.7s flip /
                cubic-bezier(0.16, 1, 0.3, 1)) are the homepage hero's cadence,

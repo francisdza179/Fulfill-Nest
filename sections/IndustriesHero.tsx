@@ -99,7 +99,7 @@ export function IndustriesHero() {
       eyebrow="Industries we serve"
       title={
         <>
-          Gifting tailored for your{" "}
+          Gifting tailored for your&nbsp;
           <RotatingCubeText
             phrases={AUDIENCE_WORDS}
             /* Reserved box, left-aligned face — the exact pairing

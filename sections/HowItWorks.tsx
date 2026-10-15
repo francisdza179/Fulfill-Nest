@@ -986,12 +986,19 @@ function StepWindowBody({
 
           The dots alone still say "this is a window". They are
           10px across, `aria-hidden`, and cost one element. */}
-      <div className="flex shrink-0 items-center justify-center border-b border-charcoal/10 px-6 py-4 md:px-8">
+      <div className="flex shrink-0 items-center justify-between border-b border-charcoal/10 px-6 py-3.5 md:px-8">
         <span aria-hidden="true" className="flex shrink-0 gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+          <span className="h-2 w-2 rounded-full bg-red-400/70" />
+          <span className="h-2 w-2 rounded-full bg-amber-400/70" />
+          <span className="h-2 w-2 rounded-full bg-emerald-400/70" />
         </span>
+        <span
+          aria-hidden="true"
+          className="rounded-full bg-warm-grey px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-charcoal/40"
+        >
+          {step.number} · {step.title}
+        </span>
+        <span className="w-10" />
       </div>
 
       {/* ── VIEWPORT ────────────────────────────────────────────── */}
@@ -1004,7 +1011,7 @@ function StepWindowBody({
         aria-hidden="true"
         className="flex flex-1 flex-col p-6 md:p-8"
       >
-        <div className="flex flex-1 flex-col justify-center rounded-card bg-warm-grey/60 p-5 md:p-7">
+        <div className="flex flex-1 flex-col justify-center rounded-card bg-warm-grey/80 p-6 md:p-8 ring-1 ring-charcoal/5">
           {demo.kind === "calendar" && (
             /* ── 01 CONSULTATION ─────────────────────────────────
                Five days on a 5-column grid, then six slots on a
@@ -2048,8 +2055,19 @@ export function HowItWorks() {
          section - a nav entry, an in-page jump, anything added later - gets the
          offset for free, exactly as the six sections above do. */
       className="relative scroll-mt-28 overflow-hidden border-y border-section-divider bg-linen py-section md:scroll-mt-36"
+      style={{ background: "linear-gradient(160deg, #f1eee7 0%, #f7f4eb 45%, #f0ece3 100%)" }}
     >
-      <div className="mx-auto max-w-7xl px-6">
+      {/* Decorative ambient glow behind the right panel — gives the flat
+          linen surface some dimensionality without adding a new colour */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-1/4 h-[600px] w-[55%] -translate-y-1/4 rounded-full opacity-40"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 70% at 70% 50%, rgb(168 59 36 / 0.06) 0%, rgb(196 106 74 / 0.04) 45%, transparent 75%)",
+        }}
+      />
+      <div className="relative mx-auto max-w-7xl px-6">
         {/* Added at a later pass: two bands on the home page whose
             `SectionHeading` carried no `description`, so both were one centred
             heading with no lead paragraph at all. A hand-placed `<p>` inside the
@@ -2437,7 +2455,7 @@ export function HowItWorks() {
             onMouseLeave={() => {
               hoveringRef.current = false;
             }}
-            className="relative hidden flex-col border-l-2 border-section-divider pl-6 md:flex md:space-y-8 lg:col-span-3 lg:h-full lg:justify-between"
+            className="relative hidden flex-col border-l-2 border-charcoal/12 pl-6 md:flex md:space-y-8 lg:col-span-3 lg:h-full lg:justify-between"
           >
             {/* THE ACTIVE INDICATOR. One bar for the whole rail, on the rail's own
                 rule, carrying the transition that does the sliding.
@@ -2473,7 +2491,7 @@ export function HowItWorks() {
             {isDesktop && indicator && (
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute z-0 w-0.5 rounded-full bg-brand-primary"
+                className="pointer-events-none absolute z-0 w-[3px] rounded-full bg-brand-primary"
                 style={{
                   left: "-2px",
                   top: `${indicator.top}px`,
@@ -2504,8 +2522,8 @@ export function HowItWorks() {
                   onKeyDown={(event) => handleTabKeys(event, index)}
                   className={`group relative block w-full cursor-pointer rounded-card border px-5 py-5 text-left transition-all duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 focus-visible:ring-offset-linen ${
                     selected
-                      ? "border-transparent bg-surface shadow-elev-1 ring-1 ring-black/5"
-                      : "border-transparent hover:bg-surface/60"
+                      ? "border-charcoal/5 bg-surface shadow-elev-2 ring-1 ring-brand-primary/10"
+                      : "border-transparent hover:bg-surface/50"
                   }`}
                 >
                   {/* THE NODE. Absolutely positioned out of the text flow and
@@ -2517,10 +2535,10 @@ export function HowItWorks() {
                       through the circle. */}
                   <span
                     aria-hidden="true"
-                    className={`absolute -left-9 top-5 flex h-7 w-7 items-center justify-center rounded-full border-2 font-mono text-xs tabular-nums transition-all duration-500 ${
+                    className={`absolute -left-10 top-4 flex h-9 w-9 items-center justify-center rounded-full border-2 font-grotesk text-sm font-bold tabular-nums transition-all duration-500 ${
                       selected
-                        ? "border-brand-primary bg-brand-primary text-white"
-                        : "border-section-divider bg-linen text-charcoal/60"
+                        ? "border-brand-primary bg-brand-primary text-white shadow-[0_0_0_3px_rgb(168_59_36/0.12)]"
+                        : "border-charcoal/20 bg-linen text-charcoal/50"
                     }`}
                   >
                     {step.number}
@@ -2531,17 +2549,17 @@ export function HowItWorks() {
                       padding, so the text column stays vertical as the node
                       fills and empties. */}
                   <span
-                    className={`block pl-8 text-lg leading-snug tracking-tight transition-colors duration-500 ${
+                    className={`block pl-10 text-lg leading-snug tracking-tight transition-colors duration-500 ${
                       selected
                         ? "font-semibold text-charcoal"
-                        : "font-medium text-charcoal/60 group-hover:text-charcoal"
+                        : "font-medium text-charcoal/55 group-hover:text-charcoal"
                     }`}
                   >
                     {step.title}
                   </span>
                   <span
-                    className={`mt-1.5 block pl-8 text-base leading-relaxed transition-colors duration-500 ${
-                      selected ? "text-taupe" : "text-charcoal/60"
+                    className={`mt-1.5 block pl-10 text-base leading-relaxed transition-colors duration-500 ${
+                      selected ? "text-taupe" : "text-charcoal/50"
                     }`}
                   >
                     {step.summary}
@@ -2635,7 +2653,7 @@ export function HowItWorks() {
                scrollbar, an outline - this radius would start clipping it, and
                the fix would be to stop that child clipping, rather than
                to drop the radius. */
-            className="relative hidden min-h-[30rem] overflow-hidden rounded-3xl md:block lg:col-span-9"
+            className="relative hidden min-h-[30rem] overflow-hidden rounded-3xl ring-1 ring-charcoal/8 shadow-elev-3 md:block lg:col-span-9"
             style={stackHeight ? { minHeight: `${stackHeight}px` } : undefined}
           >
             {steps.map((step, index) => {

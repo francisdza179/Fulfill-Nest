@@ -17,7 +17,7 @@ interface RotatingCubeTextProps {
   phrases: readonly string[];
   trailingText?: string;
   className?: string;
-  /** Kept for API compatibility; width is always content-derived. */
+  /** API compatibility. The container now reserves the widest phrase by layout. */
   stableLayout?: boolean;
   align?: "start" | "center";
   intervalMs?: number;
@@ -41,6 +41,13 @@ export function RotatingCubeText({
   flipDuration = DEFAULT_FLIP_DURATION,
   ease = DEFAULT_FLIP_EASE,
 }: RotatingCubeTextProps) {
+  const justifyClass = align === "center" ? "justify-center" : "justify-start";
+  // A left-aligned face must sit flush against the start of the reserved box:
+  // keep only the right inset. The old symmetric `px-2` left an ~8px gap ahead
+  // of the word, which reads as a small indent when the flipper starts its own
+  // line (e.g. "Let's deliver something / thoughtful") and as a hole after the
+  // preceding word when it runs inline. Centred faces stay symmetric.
+  const facePadding = align === "center" ? "px-2" : "pr-2";
   const [activeIndex, setActiveIndex] = useState(0);
   const reduceMotion = useReducedMotion();
 
@@ -69,18 +76,35 @@ export function RotatingCubeText({
     >
       <span className="sr-only">{activePhrase}</span>
 
-      {/* Invisible in-flow copy sizes the perspective wrapper to the active
-          phrase so the motion face can be absolutely positioned without the
-          box collapsing. */}
-      <span className="invisible whitespace-nowrap" aria-hidden="true">
-        {activePhrase}
-        {trailingText}
+      {/* Invisible in-flow copies of every phrase size the perspective wrapper to
+          the widest phrase, so the box stays stable when phrases of different
+          lengths swap out. All copies occupy the same grid cell. */}
+      <span
+        className="invisible grid grid-cols-1 grid-rows-1 whitespace-nowrap"
+        aria-hidden="true"
+      >
+        {phrases.length > 0
+          ? phrases.map((phrase, index) => (
+              <span
+                key={`${phrase}-${index}`}
+                className="col-start-1 row-start-1 whitespace-nowrap"
+              >
+                {phrase}
+                {trailingText}
+              </span>
+            ))
+          : (
+              <span className="col-start-1 row-start-1 whitespace-nowrap">
+                {activePhrase}
+                {trailingText}
+              </span>
+            )}
       </span>
 
       <AnimatePresence initial={false} mode="popLayout">
         <motion.em
           key={`${activePhrase}-${activeIndex}`}
-          className="absolute inset-0 flex items-center justify-center whitespace-nowrap italic text-center origin-center transform-gpu subpixel-antialiased will-change-transform px-2"
+          className={`absolute inset-0 flex items-center ${justifyClass} whitespace-nowrap italic origin-center transform-gpu subpixel-antialiased will-change-transform ${facePadding}`}
           initial={{ rotateX: -90, translateZ: CUBE_RADIUS, opacity: 0 }}
           animate={{ rotateX: 0, translateZ: CUBE_RADIUS, opacity: 1 }}
           exit={{ rotateX: 90, translateZ: CUBE_RADIUS, opacity: 0 }}

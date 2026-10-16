@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { Navigation } from "@/sections/Navigation";
 import { HeroFlanked as Hero } from "@/sections/hero/HeroFlanked";
 import { WhoWeAre } from "@/sections/WhoWeAre";
+import { ServicesWeOffer } from "@/sections/ServicesWeOffer";
+import { EditorialStatement } from "@/sections/EditorialStatement";
 import { ProductMarquee } from "@/sections/ProductMarquee";
 import { ValueProps } from "@/sections/ValueProps";
 import { ProductShowcase } from "@/sections/ProductShowcase";
-import { HowItWorks } from "@/sections/HowItWorks";
+
 import { EmotionalPayoff } from "@/sections/EmotionalPayoff";
 import { FaqList } from "@/sections/FaqList";
 import { CtaBand } from "@/sections/CtaBand";
@@ -90,6 +92,11 @@ export default function HomePage() {
         <Hero />
         <WhoWeAre />
         <ProductMarquee />
+        {/* Standout editorial transition statement between the marquee and the
+            "Services we offer" grid. Centered display type on a cream band with
+            a generous vertical rhythm so it reads as a pause, not a hero. */}
+        <EditorialStatement />
+        <ServicesWeOffer />
         {/* `layout="editorial"` and `headerAlign="center"`.
 
             `editorial` is the band's own numbered row set in columns: one
@@ -118,7 +125,7 @@ export default function HomePage() {
           revealSequence="featured"
           eyebrow="Why Fulfill Nest"
           title={
-            <span className="text-[clamp(1.7rem,8vw,2.125rem)] leading-[1.05] md:text-[inherit]">
+            <span className="text-display">
               Rewards that inspire people, logistics that feel{" "}
               <em className="accent-em">invisible</em>
             </span>
@@ -128,15 +135,9 @@ export default function HomePage() {
           surface="soft-cream"
         />
         <ProductShowcase />
-        <HowItWorks />
-        {/* The integrations marquee and the zero-touch flow diagram used to sit
-            here and have both been removed at the client's request. Nothing
-            links to their ids (`#integrations`, `#zero-touch-automation`) — both
-            anchors had zero inbound references even while they were mounted.
-            HowItWorks above declares its own `border-b border-section-divider`
-            on the `bg-linen` band, and the merged EmotionalPayoff below runs on
-            `bg-white`, so dropping two `py-section` blocks leaves the hairline
-            intact and adds no doubled padding at the new seam. */}
+        {/* HowItWorks has been removed on the client's request. ProductShowcase
+            and EmotionalPayoff each declare their own band borders, so the
+            hairline stays intact and no doubled padding lands at the new seam. */}
         {/* One merged white band: the human statement and the testimonial deck
             share a single `<section>`. The separate `Testimonials` call that
             used to sit here has been absorbed into `EmotionalPayoff`, which
@@ -145,7 +146,18 @@ export default function HomePage() {
         <EmotionalPayoff />
         {/* No hairline: the merged band above is #ffffff, so the divider
             would be the only edge between two identical bands. */}
-        <FaqList id="faq" items={homeFaqs} divider={false} />
+        <FaqList
+          id="faq"
+          items={homeFaqs}
+          divider={false}
+          eyebrow="Frequently Asked Questions"
+          title={
+            <>
+              Everything you need to know before you{" "}
+              <em className="accent-em">start</em>
+            </>
+          }
+        />
         <CtaBand
           headline={
             <>

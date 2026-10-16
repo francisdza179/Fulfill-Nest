@@ -6,6 +6,7 @@ import { SolutionsTabs } from "@/sections/SolutionsTabs";
 import { ServiceTiers } from "@/sections/ServiceTiers";
 import { Testimonials } from "@/sections/Testimonials";
 import { ServicesFaq } from "@/sections/ServicesFaq";
+import { EditorialStatement } from "@/sections/EditorialStatement";
 import { CtaBand } from "@/sections/CtaBand";
 import { Footer } from "@/sections/Footer";
 import { breadcrumbSchema, JsonLd } from "@/lib/schema";

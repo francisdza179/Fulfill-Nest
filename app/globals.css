@@ -3230,3 +3230,21 @@
     }
   }
 }
+
+/* =====================================================================
+   Global image hover zoom - every image gently scales on hover of its
+   bounding box, with overflow clipped so the scale never breaks layout.
+   ===================================================================== */
+img {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+*:has(> img) {
+  overflow: hidden;
+}
+*:has(> img):hover img {
+  transform: scale(1.05);
+}
+@media (prefers-reduced-motion: reduce) {
+  img { transition: none; }
+  *:has(> img):hover img { transform: none; }
+}

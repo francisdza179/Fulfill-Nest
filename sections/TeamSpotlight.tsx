@@ -122,7 +122,7 @@ export function TeamSpotlight() {
   const reducedMotion = useReducedMotion();
 
   return (
-    <section className="border-t border-section-divider bg-surface py-section">
+    <section id="behind-the-scenes" className="scroll-mt-32 border-t border-section-divider bg-surface py-section">
       <motion.div
         initial="hidden"
         whileInView="visible"

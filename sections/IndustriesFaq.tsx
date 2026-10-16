@@ -18,11 +18,11 @@ export function IndustriesFaq() {
     <FaqList
       items={industryFaqs}
       divider={false}
-      eyebrow="Industry FAQs"
+      eyebrow="Industries FAQs"
       title={
         <>
-          Questions by sector,{" "}
-          <em className="accent-em">answered</em>
+          Sector-specific answers built for strict{" "}
+          <em className="accent-em">compliance</em>
         </>
       }
       description="MOQs, international reach, policy limits and rush orders — what teams usually ask us about their sector's fit before brief."

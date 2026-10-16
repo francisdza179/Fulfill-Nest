@@ -190,7 +190,7 @@ export function IndustriesHero() {
              by the frame's overflow-hidden). `/services` and `/industries`
              must render identically (the reason `HeroPhotoFrame` exists); both
              pass `hoverZoom`, so the pair is identical WITH the affordance. */
-          src="/images/industries/industries-hero.jpg"
+          src="/images/heroes/industries-hero.png"
           alt="Curated corporate gift packaging arranged and ready for dispatch"
           preload
           imagePosition="55% 50%"

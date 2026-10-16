@@ -225,9 +225,8 @@ export function HeroFlanked() {
                   </div>
 
                   <p className="relative z-10 mt-0 mb-0 mx-auto max-w-xl p-0 pt-0 leading-relaxed text-body-lg text-taupe md:text-xl">
-                    Delight your team, elevate employee retention, and celebrate
-                    company milestones with Fulfill Nest—thoughtfully curated
-                    corporate gifting with end-to-end execution across India.
+                    Delight your team and boost retention with curated corporate gifting —
+                    delivered end‑to‑end across India with precision.
                   </p>
                 </div>
               </div>
@@ -260,9 +259,8 @@ export function HeroFlanked() {
                   </div>
 
                   <p className="m-0 mt-0 mb-0 mx-auto max-w-xl p-0 pt-0 leading-relaxed text-body-lg text-taupe">
-                    Delight your team, elevate employee retention, and celebrate
-                    company milestones with Fulfill Nest—thoughtfully curated
-                    corporate gifting with end-to-end execution across India.
+                    Delight your team and boost retention with curated corporate gifting —
+                    delivered end‑to‑end across India with precision.
                   </p>
                 </div>
               </div>

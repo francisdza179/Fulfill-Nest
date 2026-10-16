@@ -267,13 +267,15 @@ export function FaqAccordion({
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggle(stateKey)}
-                className="flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left transition-colors duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                className="flex w-full cursor-pointer items-start justify-between gap-6 py-6 text-left transition-colors duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
               >
-                <span className="font-display text-xl font-semibold leading-snug text-charcoal transition-colors duration-200 ease-in-out group-hover:text-brick-red">
-                  {faq.question}
-                </span>
+                <div className="min-w-0 flex-1">
+                  <span className="block w-full text-wrap whitespace-normal break-normal font-display text-xl font-semibold leading-snug text-charcoal transition-colors duration-200 ease-in-out group-hover:text-brick-red">
+                    {faq.question}
+                  </span>
+                </div>
                 <span
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-pill border text-accent-600 transition-all duration-300 ease-in-out group-hover:border-brick-red/40 group-hover:bg-brand-green-50 group-hover:text-brick-red ${
+                  className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-pill border text-accent-600 transition-all duration-300 ease-in-out group-hover:border-brick-red/40 group-hover:bg-brand-green-50 group-hover:text-brick-red ${
                     isOpen ? "rotate-45 border-brick-red/40" : "border-sand"
                   }`}
                   aria-hidden="true"
@@ -301,7 +303,7 @@ export function FaqAccordion({
               }`}
             >
               <div className="overflow-hidden">
-                <p className="max-w-2xl pb-6 pr-12 text-body text-taupe">
+                <p className="w-full text-wrap whitespace-normal break-normal pb-6 text-body text-taupe">
                   {faq.answer}
                 </p>
               </div>

@@ -15,7 +15,7 @@ export function ProductShowcase() {
           <SectionHeading
             eyebrow="The curated catalog"
             title={
-              <span className="text-[clamp(1.7rem,8vw,2.125rem)] md:text-[inherit]">
+              <span className="text-display">
                 Reward moments,{" "}
                 thoughtfully{" "}
                 <em className="accent-em">curated</em>

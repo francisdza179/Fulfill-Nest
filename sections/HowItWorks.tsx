@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import type { CSSProperties, KeyboardEvent } from "react";
+import type {
+  CSSProperties,
+  KeyboardEvent,
+  PointerEvent as ReactPointerEvent,
+} from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { formatPrice, products, steps, testimonials } from "@/lib/data";
@@ -2028,6 +2032,45 @@ export function HowItWorks() {
     setActiveIndex(index);
   }
 
+  /* HOVER PREVIEWS THE STEP, because that is what a rail of tabs is expected to
+   * do: the pointer crossing a chip is a statement of intent, and the preview
+   * should answer it at once rather than wait for a click the reader may not
+   * have meant to make.
+   *
+   * It calls `handleStepSelect` rather than restating it, so hover and click
+   * share ONE state transition and one set of semantics - including the
+   * interval restart, which arrives free because `activeIndex` is already a
+   * dependency of the auto-advance effect. Parking the pointer on step 03 to
+   * read it therefore earns that step a full dwell instead of whatever was left
+   * of the one already running.
+   *
+   * It composes with the existing rail pause rather than fighting it. Crossing
+   * onto the rail sets `hoveringRef`, which the tick declines to advance from,
+   * so by the time this runs the rotation is already paused for the duration of
+   * the hover and resumes on the way out. Nothing extra is needed to stop the
+   * auto-advance from immediately overriding what the pointer just asked for.
+   *
+   * NOT gated on `reducedMotion`, and that is a decision rather than an
+   * omission. That flag exists to stop the section MOVING BY ITSELF; a preview
+   * that follows the pointer is the reader driving it, which is the one thing
+   * the preference is not about. Suppressing it would leave the rail looking
+   * inert to exactly the visitors least inclined to sit through an autoplay.
+   *
+   * `pointerType === "touch"` is doing the work a `(hover: hover)` query would
+   * otherwise do. Touch DOES dispatch `pointerenter` - immediately before the
+   * `click` the tap produces - so without this the tap would select twice and,
+   * worse, strand the chip in its sticky `:hover` styling after the finger is
+   * gone. Filtering the input where it arrives also needs no media-query state:
+   * there is nothing to keep in sync with the layout, and no first-paint frame
+   * in which the two could disagree. */
+  function handleStepHover(
+    event: ReactPointerEvent<HTMLButtonElement>,
+    index: number,
+  ) {
+    if (event.pointerType === "touch") return;
+    handleStepSelect(index);
+  }
+
   return (
     <section
       id="how-it-works"
@@ -2519,6 +2562,7 @@ export function HowItWorks() {
                   aria-controls={panelId}
                   tabIndex={selected ? 0 : -1}
                   onClick={() => handleStepSelect(index)}
+                  onPointerEnter={(event) => handleStepHover(event, index)}
                   onKeyDown={(event) => handleTabKeys(event, index)}
                   className={`group relative block w-full cursor-pointer rounded-card border px-5 py-5 text-left transition-all duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 focus-visible:ring-offset-linen ${
                     selected

@@ -1425,7 +1425,7 @@ export function ProductCatalogTabs() {
               tabIndex={selected ? 0 : -1}
               onClick={() => selectTab(category.id)}
               onKeyDown={(event) => handleTabKeys(event, index)}
-              className={`whitespace-nowrap rounded-pill border px-4 py-2 shrink-0 text-xs font-medium transition-all opacity-100 visible md:px-5 md:py-2.5 md:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+              className={`scroll-mt-32 whitespace-nowrap rounded-pill border px-4 py-2 shrink-0 text-xs font-medium transition-all opacity-100 visible md:px-5 md:py-2.5 md:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                 selected
                   ? "border-brand-primary bg-brand-primary text-white shadow-elev-1"
                   : "border-transparent bg-linen text-taupe hover:bg-canvas hover:text-charcoal"

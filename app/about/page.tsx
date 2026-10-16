@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import { Navigation } from "@/sections/Navigation";
 import { AboutHero } from "@/sections/AboutHero";
 import { AboutStory } from "@/sections/AboutStory";
+import { EditorialStatement } from "@/sections/EditorialStatement";
 import { TeamSpotlight } from "@/sections/TeamSpotlight";
 import { TestimonialV3Section } from "@/sections/TestimonialV3Section";
 import { ValueProps } from "@/sections/ValueProps";
 import { CtaBand } from "@/sections/CtaBand";
+import { FaqList } from "@/sections/FaqList";
 import { Footer } from "@/sections/Footer";
 import { breadcrumbSchema, JsonLd } from "@/lib/schema";
 import { beliefs } from "@/lib/data";
+import { aboutFaqs } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -43,6 +46,12 @@ export default function AboutPage() {
       <main>
         <AboutHero />
         <AboutStory />
+        <EditorialStatement className="bg-surface">
+          We craft thoughtful gifting experiences that strengthen{" "}
+          <em className="font-medium italic" style={{ color: "var(--color-brick-red, #a83b24)" }}>
+            culture.
+          </em>
+        </EditorialStatement>
         {/* NO DIFFERENTIATION BAND HERE. `WhyFulfillNest` was removed from this
             page on request — it had been rebuilt four times (bento card grid,
             accordion with a sticky spotlight, comparative table, horizontal
@@ -79,6 +88,19 @@ export default function AboutPage() {
             the `AboutTestimonials` carousel, which read the same twelve
             testimonials; that component is still on disk, unreferenced. */}
         <TestimonialV3Section />
+        <FaqList
+          items={aboutFaqs}
+          divider={false}
+          eyebrow="About FAQs"
+          title={
+            <>
+              Common questions about our mission, curation, and team{" "}
+              <em className="accent-em">standards</em>
+            </>
+          }
+          description="Our philosophy, operations, and approach to humanizing corporate gifting so every reward feels intentional and on brand."
+          link={{ href: "/contact", label: "Ask a specific question" }}
+        />
         <CtaBand
           headline={
             <>

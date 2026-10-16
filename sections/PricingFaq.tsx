@@ -25,7 +25,7 @@ export function PricingFaq() {
     <FaqList
       items={pricingFaqs}
       divider={false}
-      eyebrow="Pricing & billing FAQs"
+      eyebrow="Pricing & Billing FAQs"
       title={
         <>
           Frequently asked questions about{" "}

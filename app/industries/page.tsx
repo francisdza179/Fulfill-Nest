@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Navigation } from "@/sections/Navigation";
 import { IndustriesHero } from "@/sections/IndustriesHero";
 import { IndustriesList } from "@/sections/IndustriesList";
+import { EditorialStatement } from "@/sections/EditorialStatement";
 import { ComplianceAssurance } from "@/sections/ComplianceAssurance";
 import { Testimonials } from "@/sections/Testimonials";
 import { IndustriesFaq } from "@/sections/IndustriesFaq";
@@ -43,6 +44,12 @@ export default function IndustriesPage() {
       <main>
         <IndustriesHero />
         <IndustriesList />
+        <EditorialStatement>
+          Gifting that fits your industry {" — precisely, compliantly, "}
+          <em className="font-medium italic" style={{ color: "var(--color-brick-red, #a83b24)" }}>
+            effortlessly.
+          </em>
+        </EditorialStatement>
         <ComplianceAssurance />
         {/* `IndustryCaseStudies` ("Sector success stories") was removed here;
             its three case-study metrics now live as the `proof` micro-pills in

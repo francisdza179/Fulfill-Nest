@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { InstagramIcon, LinkedInIcon, XSocialIcon } from "@/components/ui/Icons";
@@ -134,7 +136,7 @@ const columns = [
          correct as it stands - a reader following either label lands on the
          section that label names - and the earlier note counting "the two
          /about anchors that DO resolve" is now stale by one. */
-      { label: "How We Fulfill", href: "/#how-it-works" },
+      { label: "How We Fulfill", href: "/about#behind-the-scenes" },
       { label: "Our Values", href: "/about#values" },
     ],
   },
@@ -317,6 +319,12 @@ export function Footer() {
               href="/"
               aria-label="Fulfill Nest — home"
               className="flex w-fit items-center"
+              onClick={(event) => {
+                if (window.location.pathname === "/") {
+                  event.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
             >
               {/* THE HEIGHT CAP IS NOW 104px, which at the new asset's 1661x1279
                   intrinsic size (a ratio of 1.2987) renders the lockup at 135px
@@ -444,6 +452,16 @@ export function Footer() {
                     <Link
                       href={link.href}
                       className="inline-block py-1.5 text-sm text-[#EDF2EE] transition-colors hover:text-[#F7F4EB]"
+                      onClick={(event) => {
+                        const [pathPart, hash] = link.href.split("#");
+                        const targetPath = pathPart || "/";
+                        if (!hash || window.location.pathname !== targetPath) return;
+                        event.preventDefault();
+                        const target = document.getElementById(hash);
+                        if (!target) return;
+                        if (hash.startsWith("gift-tab-")) target.click();
+                        target.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
                     >
                       {link.label}
                     </Link>
@@ -603,7 +621,7 @@ export function Footer() {
             they can never collapse into a single doubled rule; the shared
             hairline keeps them one decision. */}
         <div className="mt-10 border-t border-[#F7F4EB]/22 pt-10">
-          <p className="mx-auto max-w-4xl bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728] bg-clip-text text-center font-display text-sm font-normal leading-relaxed tracking-wide text-transparent md:text-base">
+          <p className="mx-auto max-w-4xl text-center font-display text-sm font-normal leading-relaxed tracking-wide md:text-base" style={{ color: "#E2A074" }}>
             Premium corporate gifting &amp; employee recognition, curated with
             intention and fulfilled with precision.
           </p>

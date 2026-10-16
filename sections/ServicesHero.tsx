@@ -149,7 +149,7 @@ export function ServicesHero() {
              1920 native rather than 3840+ because the source is 1920. Going wider
              would mean upscaling, and the frame's `sizes` tops out well below it
              on every breakpoint. */
-          src="/images/heroes/services-hero.jpg"
+          src="/images/heroes/explore-gifts-hero.png"
           alt="A curated Fulfill Nest gift programme arranged for delivery"
           preload
           /* This hero's photo zooms 1.05 on hover, 500ms ease-out, clipped by

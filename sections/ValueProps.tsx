@@ -133,8 +133,8 @@ export function ValueProps({
      interpolated token like `items-${align}` would be invisible to the compiler
      and silently produce no rule. */
   const rowClass = inColumns
-    ? "editorial-hover-block group grid grid-cols-[auto_1fr] items-start gap-6 rounded-xl border-t border-section-divider py-8 transition-[background-color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:[transform:translateY(-2px)] hover:bg-bg-hover hover:shadow-elev-1"
-    : "editorial-hover-block group -mx-5 grid grid-cols-[auto_1fr] items-center gap-6 rounded-xl border-t border-section-divider px-5 py-8 transition-[background-color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:[transform:translateY(-2px)] hover:bg-bg-hover hover:shadow-elev-1 last:border-b-0 md:gap-10";
+    ? "editorial-hover-block group relative grid grid-cols-[auto_1fr] items-start gap-6 overflow-hidden rounded-xl border-t border-section-divider py-8 transition-[background-color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:[transform:translateY(-2px)]"
+    : "editorial-hover-block group relative -mx-5 grid grid-cols-[auto_1fr] items-center gap-6 overflow-hidden rounded-xl border-t border-section-divider px-5 py-8 transition-[background-color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:[transform:translateY(-2px)] last:border-b-0 md:gap-10";
 
   /* Column gap only. `gap-y` stays unset so the rows are separated by each
      cell's own hairline and its `py-8`, exactly as the full-width list
@@ -203,17 +203,31 @@ export function ValueProps({
                     variants={reducedMotion ? undefined : itemVariants}
                     className={rowClass}
                   >
+                    {value.image ? (
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 z-0 opacity-0 translate-y-4 transition-all duration-400 ease-in-out group-hover:translate-y-0 group-hover:opacity-100"
+                      >
+                        <img
+                          src={encodeURI(value.image)}
+                          alt=""
+                          className="h-full w-full object-cover scale-105 transition-transform duration-400 ease-in-out group-hover:scale-100"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(20,18,16,0.75)] via-[rgba(20,18,16,0.38)] to-[rgba(20,18,16,0.08)]" />
+                      </div>
+                    ) : null}
                     <span
-                      className="stat-numeral stat-color-transition text-5xl leading-none text-brand-green-700 md:text-6xl"
+                      className="relative z-10 stat-numeral stat-color-transition text-5xl leading-none text-brand-green-700 md:text-6xl"
                       aria-hidden="true"
                     >
                       {number}
                     </span>
-                    <div>
-                      <h3 className="font-display text-2xl text-charcoal transition-colors duration-300 ease-in-out group-hover:text-brand-green-700">
+                    <div className="relative z-10">
+                      <h3 className="font-display text-2xl text-charcoal transition-colors duration-300 ease-in-out group-hover:text-white">
+
                         {value.title}
                       </h3>
-                      <p className={`mt-3 max-w-xl text-body ${bodyTextColor}`}>
+                      <p className={`mt-3 max-w-xl text-body ${bodyTextColor} transition-colors duration-300 ease-in-out group-hover:text-white`}>
                         {value.body}
                       </p>
                     </div>

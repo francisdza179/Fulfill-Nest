@@ -1,4 +1,4 @@
-import { serviceFaqs } from "@/lib/data";
+import { giftsFaqs } from "@/lib/data";
 import { FaqList } from "@/sections/FaqList";
 
 /**
@@ -25,9 +25,9 @@ export function ServicesFaq({
 }) {
   return (
     <FaqList
-      items={serviceFaqs}
+      items={giftsFaqs}
       divider={false}
-      eyebrow="Service & ordering FAQs"
+      eyebrow="Gifts FAQs"
       title={
         <>
           FAQs about our <em className="accent-em">services</em>

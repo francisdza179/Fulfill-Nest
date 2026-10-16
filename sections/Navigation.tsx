@@ -66,9 +66,11 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 const primaryLinks = [
   { href: "/", label: "Home" },
   { href: "/gifts", label: "Explore Gifts" },
+  { href: "/services", label: "Services" },
   { href: "/industries", label: "Industries" },
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
+  { href: "/faq", label: "FAQs" },
 ];
 
 const SCROLL_LIFT_THRESHOLD = 150;

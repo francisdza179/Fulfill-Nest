@@ -81,6 +81,7 @@ export interface ValueProp {
    * Required would fail the home page; forbidden would fail /about.
    */
   detail?: string;
+  image?: string;
 }
 
 /** One item of the About page's "Why Fulfill Nest" differentiation split — a
@@ -580,16 +581,19 @@ export const values: ValueProp[] = [
         icon: "shield",
         title: "Reliability",
         body: "Dependable doorstep delivery, real-time dispatch tracking, and guaranteed delivery timelines—trusted by people ops teams who can't afford surprises.",
+        image: "/images/why-fulfill-nest/Reliability.png",
     },
     {
         icon: "sparkles",
         title: "Curation",
-        body: "Every reward is edited by hand for the moment and the person — never a generic catalog dump."
+        body: "Every reward is edited by hand for the moment and the person — never a generic catalog dump.",
+        image: "/images/why-fulfill-nest/Curation.png"
     },
     {
         icon: "heart",
         title: "Delight",
-        body: "The unboxing matters. Warm, tactile, human - designed to make recipients feel genuinely seen."
+        body: "The unboxing matters. Warm, tactile, human - designed to make recipients feel genuinely seen.",
+        image: "/images/why-fulfill-nest/Delight.png"
     },
     /* Three added at the client's request to take this from three items to six,
        set in columns as two rows of three. `values` is read by the home page
@@ -603,17 +607,20 @@ export const values: ValueProp[] = [
     {
         icon: "globe",
         title: "Global Delivery & Duty Handling",
-        body: "Seamless international shipping with prepaid duties and taxes, ensuring smooth customs clearance for remote global teams."
+        body: "Seamless international shipping with prepaid duties and taxes, ensuring smooth customs clearance for remote global teams.",
+        image: "/images/why-fulfill-nest/Global Delivery & Duty Handling.png"
     },
     {
         icon: "package",
         title: "100% Custom Branded Packaging",
-        body: "Elevate your employer brand with fully customized boxes, handwritten notes, and bespoke swag packaging."
+        body: "Elevate your employer brand with fully customized boxes, handwritten notes, and bespoke swag packaging.",
+        image: "/images/why-fulfill-nest/100% Custom Branded Packaging.png"
     },
     {
         icon: "radar",
         title: "Real-Time Inventory & Support",
-        body: "Track stock levels across global warehouses and rely on a dedicated account manager for custom sourcing."
+        body: "Track stock levels across global warehouses and rely on a dedicated account manager for custom sourcing.",
+        image: "/images/why-fulfill-nest/Real‑Time Inventory & Support.png"
     }
 ];
 export const beliefs: ValueProp[] = [
@@ -702,7 +709,7 @@ export const beliefs: ValueProp[] = [
      /images/about/behind-the-scenes.jpg                    -> `TeamSpotlight`
      /images/catalog/festive-hamper-v2.jpg                  -> `products`
      /images/industries/technology-enterprise-swag.jpg       -> `industries`
-     /images/compliance/audit-traceability-v2.jpg           -> `compliancePillars`
+     /images/compliance/audit-traceability.png           -> `compliancePillars`
      /images/catalog/top-performer-trophy-box-v2.jpg         -> `products`
 
    Kept here because the alt text written for them is still worth having, and
@@ -774,12 +781,12 @@ export const whoWeArePillars = [
         body: "In-house assembly, inventory tracking, and custom box packing prepped for on-demand dispatch.",
     },
     {
-        title: "Transparent Accounting & GST",
-        body: "Automated tax invoicing, clear line-item billing, and hassle-free vendor onboarding.",
+        title: "Seamless Corporate Compliance & Billing",
+        body: "End-to-end GST support, automated invoicing, and enterprise-ready documentation that removes friction for finance and procurement teams.",
     },
     {
-        title: "Unboxing Delight",
-        body: "Custom branded packaging, personalized handwritten notes, and premium tactile presentation that drives retention."
+        title: "Premium Brand-Forward Presentation",
+        body: "Custom-designed packaging, thoughtful personalization, and a high-impact unboxing experience crafted to make every reward feel meaningful."
     }
 ];
 export const whoWeAreReach = [
@@ -1070,11 +1077,10 @@ export const industries: Industry[] = [
     {
         id: "ecommerce-d2c",
         name: "E-Commerce & D2C Brands",
-        body: "Peak-season spikes should not mean a stockout, a late parcel or a burnt-out packer. We hold your buffer, kit your launch calendar and keep every order on one inventory pool, so demand spikes land as a busy week rather than a crisis.",
+        body: "Keep buffer stock, flash drops, and unified inventory management tight. We hold launches and peaks in one pool so spikes land as a busy week, not a crisis.",
         points: [
             "Buffer stock held across peak and launch windows",
             "Same-day kitting for flash drops and restocks",
-            "One inventory pool across D2C and wholesale orders",
         ],
         image: "/images/industries/ecommerce-d2c.jpg",
         imageAlt: "Dealer incentive gift box prepared for an e-commerce brand campaign",
@@ -1087,11 +1093,10 @@ export const industries: Industry[] = [
     {
         id: "corporate-festive",
         name: "Corporate & Festive Gifting",
-        body: "The festive quarter is the whole year compressed into eight weeks, and it is booked before anyone starts planning it. We reserve capacity early, lock curation against your calendar, and consolidate the dispatch onto one invoice.",
+        body: "Streamline early capacity reservation and consolidated invoicing. We lock curation to your calendar and dispatch on one invoice.",
         points: [
             "Capacity reserved before the festive window opens",
             "Culturally aware hampers and milestone drops",
-            "Consolidated dispatch on a single invoice",
         ],
         image: "/images/industries/corporate-festive-gifting.jpg",
         imageAlt: "Diwali corporate gift hamper box with festive presentation",
@@ -1105,11 +1110,10 @@ export const industries: Industry[] = [
     {
         id: "healthcare-pharma",
         name: "Healthcare & Pharma",
-        body: "Shift-based staff rarely get a quiet moment, let alone a great reward. Flexible, night-shift-aware gifting with compassionate delivery windows to every site, and per-recipient records ready for audit.",
+        body: "Support night-shift delivery windows and audit-ready records. We give shift teams a seamless reward experience across every site.",
         points: [
             "Night-shift and weekend delivery windows",
             "24h replacement dispatch, no questions asked",
-            "Per-recipient delivery records for audits",
         ],
         image: "/images/industries/healthcare-pharma.jpg",
         imageAlt: "Medical staff appreciation gift box ready for dispatch",
@@ -1123,11 +1127,10 @@ export const industries: Industry[] = [
     {
         id: "retail-wholesale",
         name: "Retail & Wholesale Distribution",
-        body: "Frontline teams move fast and stock turns faster. Scalable hampers, milestone gifts and incentive boxes that clear a season without missing a single promotional window or leaving a shelf empty.",
+        body: "Trim high-velocity kits and compressed dispatch. We scale hampers and incentive boxes so peak windows clear without empty shelves.",
         points: [
             "High-velocity kits for store and floor teams",
             "48h compressed dispatch for rush drops",
-            "Multi-region fulfilment with duties handled",
         ],
         image: "/images/industries/retail-wholesale.jpg",
         imageAlt: "Executive gift hamper box for distributor incentive programmes",
@@ -1141,11 +1144,10 @@ export const industries: Industry[] = [
     {
         id: "technology-enterprise",
         name: "Technology & Enterprise Swag",
-        body: "Remote-first teams, stand-out moments. Distributed recognition kits, new-hire welcomes and all-hands swag — logged and trackable at scale, with customs handled in-hub so a distributed workforce receives everything on one calendar.",
+        body: "Condense remote welcome kits and HRIS sync details. We track distributed recognition at scale with customs handled in-hub.",
         points: [
             "Remote-first welcome kits for new joiners",
             "Milestone recognition synced from your HRIS",
-            "Customs and duties cleared in-hub",
         ],
         image: "/images/industries/technology-enterprise-swag.jpg",
         imageAlt: "Work anniversary gift box for a technology team",
@@ -1158,11 +1160,10 @@ export const industries: Industry[] = [
     {
         id: "industrial-manufacturing",
         name: "Industrial & Manufacturing",
-        body: "Plants and depots are hard on packaging and harder on rosters. Milestone chests and safety-programme rewards in rugged packaging, scheduled around shift patterns, with a proof of receipt for every unit that leaves.",
+        body: "Shorten rugged packaging and per-unit receipts. We schedule milestone and safety rewards around shifts with logged delivery.",
         points: [
             "Safety-programme and long-tenure rewards",
             "Rugged packaging for plant environments",
-            "Per-unit receipts for every pallet shipped",
         ],
         image: "/images/industries/industrial-manufacturing.jpg",
         imageAlt: "Long-service reward box for plant and manufacturing employees",
@@ -1208,7 +1209,7 @@ export const compliancePillars: CompliancePillar[] = [
         titleAccent: "Security",
         summary: "Vetted partners, documented custody, proof at every handoff.",
         detail: "Your inventory is held with vetted fulfilment partners under a documented chain of custody. Nothing moves without a recorded handoff, and nothing is signed for without a proof-of-delivery record against the recipient. Peak capacity is reserved before a season opens rather than found during it.",
-        image: "/images/compliance/physical-warehouse-security-v2.jpg",
+        image: "/images/compliance/physical-warehouse-security.png",
         imageAlt: "Sealed, racked storage in a Fulfill Nest partner warehouse",
         ctaLabel: "Discuss Facility Security",
         specs: [
@@ -1223,7 +1224,7 @@ export const compliancePillars: CompliancePillar[] = [
         titleAccent: "Privacy",
         summary: "Recipient data encrypted, access-controlled, never resold.",
         detail: "Corporate gifting means holding employee addresses and personal details, so the handling is built for it. Recipient lists are encrypted at rest and in transit behind role-based access, and couriers see only what a single delivery requires. We never retain a team's data beyond the programme that needs it, and we never share your people's data.",
-        image: "/images/compliance/data-system-privacy-v2.jpg",
+        image: "/images/compliance/data-system-privacy.png",
         imageAlt: "Encrypted recipient records held behind role-based access",
         ctaLabel: "Request Security Overview",
         specs: [
@@ -1238,7 +1239,7 @@ export const compliancePillars: CompliancePillar[] = [
         titleAccent: "Controls",
         summary: "Hard caps enforced before checkout. GST-ready invoicing.",
         detail: "Policy is built into the programme on day one rather than reconciled after it. You set hard per-recipient and per-campaign ceilings and they are enforced before anything reaches checkout, so an over-budget pick is blocked at source. Every order ships with GST-ready, line-item invoicing your finance team can reconcile in minutes.",
-        image: "/images/compliance/regulatory-budget-controls-v2.jpg",
+        image: "/images/compliance/regulatory-budget-controls.png",
         imageAlt: "Per-recipient and per-campaign budget caps applied at checkout",
         ctaLabel: "Consult on Compliance",
         specs: [
@@ -1253,7 +1254,7 @@ export const compliancePillars: CompliancePillar[] = [
         titleAccent: "Traceability",
         summary: "Disclosure-ready reporting your auditors already ask for.",
         detail: "Governed sectors need the same report their auditors request, and they should not have to ask twice. Risk and procurement get a downloadable trail covering invoicing, recipient records, dispatch and proof of receipt — the full chain, not a summary of it. On a recent programme that trail cleared audit with zero compliance flags raised.",
-        image: "/images/compliance/audit-traceability-v2.jpg",
+        image: "/images/compliance/audit-traceability.png",
         imageAlt: "A completed order trail from invoice through to proof of receipt",
         ctaLabel: "Inquire About Traceability",
         specs: [
@@ -1303,36 +1304,52 @@ export const industryCaseStudies: IndustryCaseStudy[] = [
 ];
 export const industryFaqs: FaqItem[] = [
     {
-        question: "Is there a minimum order size for industry programmes?",
-        answer: "It varies by tier, not by sector. Essential self-serve programmes start at 20 units and Managed Corporate at 50, while Bespoke Enterprise engagements are scoped around your headcount with no fixed floor. In every sector we right-size the minimum to your occasion — some of our favourite healthcare and professional-services programmes began with a single heartfelt batch."
+        "question": "What compliance frameworks can gifting programs adhere to for regulated industries?",
+        "answer": "We align gifting executions to sector-specific governance, applicable value limits, ethics policies, internal review protocols, and documentation requirements across healthcare, financial services, technology, and enterprise organisations, while maintaining standard quality and delivery service levels."
     },
     {
-        question: "How do you handle multi-location fulfillment and door-step delivery across India?",
-        answer: "We deliver individually addressed kits to employee, client, or event addresses nationwide. Every package is dispatched via tracked courier partners, and you receive real-time status updates through a single delivery dashboard."
+        "question": "How are gifting programs coordinated across multiple locations, branches, or warehouses?",
+        "answer": "Programs are managed through centralised planning, regional batch allocation, address verification, and coordinated dispatch routing. This model supports branch rollouts, warehouse activation kits, regional recognition drives, and nationwide program deployment without duplicating administration."
     },
     {
-        question: "How do you respect company or sector policy limits on gift value?",
-        answer: "Policy caps are built into the programme from day one. You set hard per-recipient and per-campaign ceilings — including sector-specific rules like healthcare anti-kickback limits or finance compliance thresholds — and our system blocks anything over budget before it reaches checkout. Finance gets a policy-config report alongside every invoice."
+        "question": "What security measures protect recipient and employee data during fulfilment?",
+        "answer": "Personal data is captured through secure forms and stored in controlled environments with limited access permissions, encrypted transmission practices, and defined retention procedures aligned to enterprise data governance requirements."
     },
     {
-        question: "Can you handle a last-minute bulk order before a peak window?",
-        answer: "Rush slots exist for exactly this. Standard programmes ship within 5–7 working days; for urgent drops we can compress to 48–72 hours for in-stock curation, and we carry buffer stock through peak windows like Diwali and year-end. Bigger or fully custom orders get honest lead times rather than promises we can't keep."
+        "question": "How are budget controls and spend policies maintained across industry programs?",
+        "answer": "Budget controls are embedded at curation, approval, assembly, and billing stages. Department-wise caps, cohort-level benchmarks, and audit-ready reporting ensure that programs remain cost-controlled without sacrificing quality and experience."
     },
     {
-        question: "Do healthcare or finance compliance rules change how gifts are logged?",
-        answer: "For governed sectors we layer compliance onto the standard chain of custody: per-recipient documentation, disclosure-ready reporting and policy-capped values. Healthcare and finance teams typically download the same reports their auditors already ask for."
+        "question": "What audit trails and records are generated throughout fulfilment?",
+        "answer": "We provide structured records covering approvals, batch assemblies, dispatch confirmations, courier references, delivery status, and invoicing documentation. These support procurement audits, compliance reviews, and internal governance requirements."
     },
     {
-        /* Terminology entry. Kitting, custom packaging and batch tracking are
-           all named as capabilities in the guarantee/capability copy but never
-           explained, and "batch tracking" in particular is the sort of phrase
-           that lands as jargon on a procurement reader. Appended rather than
-           interleaved because the five questions above run practical ->
-           operational -> governance, and this is a "how the operation
-           actually works" deeper dive rather than a buying-decision
-           question. */
-        question: "What is kitting, custom packaging, and batch tracking?",
-        answer: "Kitting is the process of bundling multiple individual items into a single curated gift box. Custom packaging adds your brand identity through custom-printed boxes, branded tape, tissue wraps, and personalized insert cards. Batch tracking assigns a unique tracking identifier to your entire project run, allowing you to monitor dispatch and delivery status across hundreds of addresses simultaneously from one dashboard."
+        "question": "Do industry programs require minimum order thresholds?",
+        "answer": "Most programs can be initiated from modest unit volumes, with flexible commercial arrangements for enterprise-level campaigns. Final thresholds depend on custom packaging, production lead times, and product sourcing requirements."
+    },
+    {
+        "question": "How are employee gifts delivered to field-based or distributed teams?",
+        "answer": "Gifts can be delivered to personal addresses, regional depots, client sites, remote offices, or event venues. We coordinate logistics based on recipient geography and provide visibility at every dispatch stage."
+    },
+    {
+        "question": "Are gift themes available for different industries and workplace cultures?",
+        "answer": "Yes. We curate tailored propositions across technology, finance, manufacturing, healthcare, consulting, retail, and other sectors, balancing recipient relevance, cultural fit, and sector-appropriate product quality."
+    },
+    {
+        "question": "Can multi-location partner and channel networks be included in gifting campaigns?",
+        "answer": "Yes. Partner-network programs can support branch-level rollouts, reseller recognition, distributor appreciation, and revenue-based reward cycles with separate tracking, reporting, and dedicated account management as required."
+    },
+    {
+        "question": "Are international dispatches supported for global teams or overseas partners?",
+        "answer": "Select programs can support international delivery depending on product suitability, destination regulations, customs restrictions, and partner requirements. Feasibility is confirmed during program scoping."
+    },
+    {
+        "question": "How is packaging adapted for regulated sectors and policy-sensitive environments?",
+        "answer": "Packaging can be tailored with compliant messaging, value-aligned inserts, neutral branding, and sector-specific documentation. This helps organisations meet internal policies and regulatory expectations without compromising presentation."
+    },
+    {
+        "question": "What is batch tracking and how does it support traceability?",
+        "answer": "Batch tracking records assembly groupings, component lot information, packaging stages, and dispatch linkage. This creates a traceable record that improves accountability, quality control, and audit compliance throughout the program."
     }
 ];
 /** Membership & plan tiers, four across on /pricing.
@@ -1748,80 +1765,53 @@ export const faqs: FaqItem[] = [
   },
 ];
 export const homeFaqs: FaqItem[] = [
-    /* TWO ENTRIES REMOVED, both of them deliberate rather than accidental.
-
-       "How do you handle international shipping and customs duties?"
-         Cost the home page a SECOND STATEMENT of something it already says, not
-         the statement itself. `values` — rendered by `ValueProps`, higher up
-         this same page — already carries a tile titled "Global Delivery &
-         Duty Handling" whose body is "Seamless international shipping with
-         prepaid duties and taxes, ensuring smooth customs clearance for remote
-         global teams". The FAQ restated that tile in more detail.
-
-         ONE NUMBER DID NOT SURVIVE ANYWHERE ELSE: "65+ countries". That figure
-         appeared only in this answer, and it is a specific published coverage
-         claim, not decoration — the comment on the fourth `journalPosts` entry
-         still refers to "the site's existing coverage claims are 40+ and 65+
-         countries". Elsewhere the service survives in words rather than in that
-         figure: `serviceTiers` says "Global fulfillment with customs handling"
-         (on /services) and `membershipTiers` says "Global fulfillment" (on
-         /pricing). So the capability is advertised on four routes; the 65+ figure
-         is now on no route at all. If that number is still intended, it belongs
-         on the `values` tile, which already carries the claim without it.
-
-       "Can Fulfill Nest integrate with our existing HR, Slack, or HRIS platforms?"
-         This one DOES cost the home page a claim, and it is the reason to record
-         it: nothing else on `/` names an HRIS, Slack, BambooHR, Workday or HiBob.
-         Those integrations are still stated on `/services`
-         (`AutomationFlow`, `IntegrationMarquee`, `SolutionsTabs`), on `/faq` and
-         in `serviceTiers` — but the home page imports none of those sections, so
-         after this removal the home page no longer advertises the capability at
-         all. The integration MARQUEE is the more visible statement of it
-         elsewhere; whether home should carry one is a call for whoever owns the
-         page, not a detail to be lost silently.
-
-       NEITHER WAS REPLACED. The list was nine items and now holds seven, which is
-       plenty for a single-column disclosure list — there is no row-count parity
-       to protect here, no grid to leave ragged, and no partner in the layout
-       that a shorter list would imbalance. The suggested replacement about lead
-       times and minimum order sizes was therefore not needed: the list already
-       answers both, in "What is your typical turnaround time from brief to
-       delivery?" and "Is there a minimum order quantity (MOQ) or minimum spend
-       requirement?". Adding an eighth entry restating them would have been
-       duplication of the kind the first removal was fixing. */
     {
-        question: "Can we fully customize the product branding and unboxing experience?",
-        answer: "Absolutely. From custom-debossed goods and embroidered apparel to personalized handwritten inserts and branded gift boxes, every touchpoint is designed to align with your brand visual identity."
+        "question": "What specific categories of corporate gifting does Fulfill Nest specialise in?",
+        "answer": "We design and execute comprehensive corporate gifting and reward frameworks tailored specifically for modern organizations. This spans internal culture-building programs, milestone celebrations, onboarding kits, and external partner or client appreciation strategies."
     },
     {
-        question: "What is your typical turnaround time from brief to delivery?",
-        answer: "We provide a curated reward menu proposal within 48 hours of receiving your brief. Fulfillment timelines vary by customization level, but on-demand kits can be dispatched within 24–48 hours from our warehouses."
+        "question": "Which departments and leadership roles typically partner with Fulfill Nest?",
+        "answer": "We work closely with People Operations, HR teams, Workplace Administration, Procurement specialists, CXOs, and Channel Heads across fast-growing startups, mid-market companies, and large multinational enterprises."
     },
     {
-        question: "Is there a minimum order quantity (MOQ) or minimum spend requirement?",
-        answer: "No. Whether you are sending a single welcome kit for an executive joiner or managing quarterly rewards for thousands of remote employees, we accommodate both on-demand single dispatches and large-scale bulk distributions."
+        "question": "Do you cater to both internal employee programs and external partner engagement?",
+        "answer": "Yes, absolutely. Our programs are built to bridge internal culture enhancement—such as employee retention and morale—with strategic external partner rewards, channel incentives, and stakeholder engagement."
     },
     {
-        question: "What is ISO 27001 compliance and why does it matter for corporate gifting?",
-        answer: "ISO 27001 is the global gold standard for information security. Because corporate gifting involves sensitive employee addresses and personal details, our ISO-aligned security framework guarantees that all company and recipient data is encrypted, secure, and compliant with strict enterprise privacy laws."
+        "question": "What does the curation process entail to ensure it aligns with our brand?",
+        "answer": "Curation for us goes far beyond simply selecting items. We meticulously evaluate every product, material, packaging finish, and unboxing detail to ensure it authentically reflects your core brand values, corporate identity, and the emotion of the occasion."
     },
     {
-        question: "How do you handle sustainability and eco-conscious sourcing?",
-        answer: "We offer dedicated eco-curated product catalogs featuring B-Corp certified brands, GOTS-certified organic cotton apparel, plastic-free packaging, and carbon-neutral shipping options to align with your corporate ESG goals."
+        "question": "How do you manage logistics and delivery for remote or hybrid teams distributed across India?",
+        "answer": "We provide an end-to-end logistics solution that includes secure address collection portals, verification workflows, careful multi-layer packaging, and reliable doorstep delivery reaching recipients pan-India."
     },
     {
-        question: "What happens if a package is lost or damaged during transit?",
-        answer: "We provide a 100% doorstop guarantee. Every shipment includes real-time tracking, and in the rare event an item arrives damaged or goes missing, our team dispatches a free replacement immediately with zero friction for your recipient."
+        "question": "Can our team review samples or digital mockups before approving a bulk order?",
+        "answer": "Yes. Depending on the scale and scope of your gifting program, we provide high-fidelity digital mockups or physical sample kits so you can review the items and packaging firsthand before production begins."
     },
     {
-        /* Terminology entry. "Omnichannel" is the broadest abstraction on the
-           page and the only one the reader cannot infer from the question
-           alone. The existing entries each describe something the buyer will
-           receive; this one describes how the back office is wired, so it
-           names the three channel types explicitly instead of assuming the
-           reader knows what B2B fulfilment is. */
-        question: "What does omnichannel fulfillment mean for my business?",
-        answer: "Omnichannel fulfillment means syncing and shipping inventory seamlessly across all your sales channels—B2C e-commerce stores, B2B wholesale orders, and marketplaces—from a unified warehouse network."
+        "question": "Do you offer eco-friendly and sustainable gifting alternatives?",
+        "answer": "We prioritize sustainability by partnering with conscious brands that offer eco-friendly, recycled, ethically sourced, and zero-waste product alternatives without ever compromising on quality or aesthetics."
+    },
+    {
+        "question": "Which workplace occasions and milestones do your gifting programs support?",
+        "answer": "Our programs are built for the entire employee lifecycle—including new hire onboarding, work anniversaries, festive celebration cycles, leadership offsite kits, spot recognition, and major corporate milestones."
+    },
+    {
+        "question": "What quality assurance measures do you implement during production?",
+        "answer": "Every single gift box undergoes strict multi-step quality control. Our processes involve controlled in-house assembly, careful hand-packing, and secure dispatch tracking to ensure flawless presentation upon arrival."
+    },
+    {
+        "question": "What personalization and branding options are available for our corporate kits?",
+        "answer": "We offer extensive personalization features, including custom monogramming, precision laser engraving, branded belly bands, custom sleeves, and personalized message cards inserted directly into the boxes."
+    },
+    {
+        "question": "Can we integrate our own company-branded merchandise or event swag into the boxes?",
+        "answer": "Yes, you can. We frequently integrate client-supplied promotional merchandise, branded swag, or bespoke leadership notes seamlessly into our curated gift boxes during assembly."
+    },
+    {
+        "question": "How do you handle high-volume, enterprise-scale gifting programs?",
+        "answer": "Large-scale programs are managed through structured batch-based production, proactive inventory planning, and strict SLA-driven fulfilment frameworks to guarantee consistency, accuracy, and on-time delivery across thousands of recipients."
     }
 ];
 export const serviceTiers: ServiceTier[] = [
@@ -1936,73 +1926,203 @@ export const serviceCaseStudy: ServiceCaseStudy = {
 };
 export const serviceFaqs: FaqItem[] = [
     {
-        question: "What is the minimum order quantity (MOQ) across your service tiers?",
-        answer: "The Essential / Self-Serve tier starts at 20 units, and Managed Corporate programmes begin at 50 units. Bespoke Enterprise engagements have no fixed floor — volumes are scoped per programme and quoted around your headcount, calendar and gifting occasions."
+        "question": "What exactly is included in an end-to-end corporate gifting service engagement?",
+        "answer": "Our service spans strategy, curation, sourcing, sampling, custom packaging, address capture, secure assembly, quality assurance, multi-point dispatch, recipient delivery, and post-delivery support. Every engagement is structured around a clear workflow and milestone sign-off to ensure accountability from planning to delivery."
     },
     {
-        question: "How far in advance do we need to place large festive or milestone orders?",
-        answer: "Standard programmes ship within 5–7 working days of shortlist approval. Large festive or milestone drops (500+ units, multi-city) are best booked 3–4 weeks ahead — peak windows like Diwali and year-end fill up fast, so earlier booking means guaranteed capacity and better freight rates."
+        "question": "How are recurring gifting cycles managed for onboarding, rewards, and celebrations?",
+        "answer": "We design evergreen programs for onboarding kits, anniversary milestones, quarterly recognition, festive moments, and leadership events. Contribution calendars, approved SKU lists, and replenishment checkpoints are maintained to keep each cycle consistent and scalable."
     },
     {
-        question: "Can we include our own custom company swag or personalized greeting notes inside the boxes?",
-        answer: "Yes. Managed Corporate and Bespoke Enterprise include custom inserts, greeting cards and approved company swag — we receive your items, quality-check each piece and pack them alongside our curation with your branding. Self-serve kits can add branded labels and printed notes as an à-la-carte extra."
+        "question": "Can you develop bespoke employee reward frameworks aligned to organisational objectives?",
+        "answer": "Yes. Recognition strategies can be refined for spot awards, peer-to-peer recognition, milestone achievements, value-based rewards, and contribution scoring. We help organisations establish frameworks that are engaging, measurable, and operationally sustainable."
     },
     {
-        question: "How do you handle address collection and verification for remote employees?",
-        answer: "We send your admins a secure intake link to collect recipient details in one pass. Before dispatch, our Address Verification Engine confirms each address by SMS and email, flags mismatches and lets recipients correct details — cutting failed deliveries to near zero, even for fully distributed workforces."
+        "question": "How are premium and fragile items protected during production and dispatch?",
+        "answer": "They undergo controlled assembly using reinforced inserts, premium outer cartons, cushioning materials, and presentation-safe packaging. Critical items pass additional inspection checkpoints before dispatch so the delivered condition matches our quality standards."
     },
     {
-        question: "What happens if a recipient receives a damaged package or is unavailable during delivery?",
-        answer: "Two guarantees cover this. If a package arrives damaged, the Zero-Damage Guarantee triggers a free replacement dispatch within 24 hours — no questions asked. If a recipient is unavailable, the courier holds and automatically retries the delivery, and if a drop ultimately can't be completed the gift balance rolls over as a credit toward a future order."
+        "question": "Do you offer digital reward options alongside physical gift kits?",
+        "answer": "Yes. Multi-brand gift cards, voucher bundles, and redemption-driven reward journeys can complement physical gifting strategies or serve as standalone solutions for distributed and last-minute deployments."
     },
     {
-        /* Terminology entry. `GuaranteesGrid` already renders the eyebrow
-           "ENTERPRISE SLAs & GUARANTEES" and `serviceTiers` already lists "SLA
-           guarantees on delivery windows & damage", so the acronym is on the
-           page twice without ever being defined. This answers that.
+        "question": "Can different reward structures and gift tiers be supported within the same program?",
+        "answer": "Yes. Complex programs can include multiple recognition tiers, budget bands, role-based differentiation, and region-specific configurations while preserving a consistent brand experience and service standard."
+    },
+    {
+        "question": "How is consistency maintained across thousands of individual gifts?",
+        "answer": "Through standardized workflows, controlled in-house assembly, batch tracking, pre-dispatch quality audits, and documented packaging protocols. This governance ensures consistent presentation regardless of volume or geographical spread."
+    },
+    {
+        "question": "What event-specific gifting solutions can be delivered for conferences or leadership off-sites?",
+        "answer": "We design conference welcome kits, participant boxes, retreat hampers, culture-day gifts, leadership summit packs, and experiential additions, all aligned to event objectives and delivered to hotel rooms, venues, or delegate homes."
+    },
+    {
+        "question": "How is company-supplied merchandise and collateral integrated into curated kits?",
+        "answer": "We manage receipt, storage, inventory logging, controlled insertion, and inspection of supplied items. Each piece is allocated to the correct assembly stage and checked before sealing to ensure seamless presentation and brand continuity."
+    },
+    {
+        "question": "What sample, mockup, and proofing options are available prior to production approval?",
+        "answer": "Depending on scope, procurement teams can review digital mockups, packaging visualisations, pre-production samples, or fully assembled physical sample kits. These checkpoints reduce downstream revisions and confirm expectations before bulk processing begins."
+    },
+    {
+        "question": "How is recipient address collection and verification managed for distributed teams?",
+        "answer": "We utilise secure self-service portals, encrypted storage, approval workflows, and verification checks to consolidate and validate recipient details. This reduces operational risk and protects employee data throughout the program."
+    },
+    {
+        "question": "What service-level commitments and escalation frameworks are offered to enterprise clients?",
+        "answer": "Our SLAs define milestones for sourcing, assembly, dispatch, and delivery, supported by dedicated account management, issue escalation paths, and transparent reporting. This ensures operational accountability during high-volume or time-sensitive campaigns."
+    }
+];
 
-           NOTE for review: 99.8%+ order accuracy is a NEW figure and a NEW axis.
-           Every existing accuracy claim on the site is 99% and is about on-time
-           delivery (HeroStats, HeroFlanked, Hero, and the stat blocks in this
-           file). This is order accuracy, not punctuality, so it does not
-           contradict those — but it is a higher number on a different metric,
-           and a reader who sees "99%" in the hero stat then "99.8%+" here may
-           read the hero as understating us. Worth confirming the figure is one
-           the business will stand behind contractually before this ships. */
-        question: "What are Enterprise SLAs (Service Level Agreements)?",
-        answer: "An Enterprise SLA is a contractually guaranteed benchmark for operational performance. It guarantees specific metrics such as 99.8%+ order accuracy, guaranteed same-day dispatch cutoffs, and strict delivery timelines — backed by financial credits or remedies if we miss those targets."
+export const giftsFaqs: FaqItem[] = [
+    {
+        "question": "What provenance and quality standards govern the products featured in the Explore Gifts catalogue?",
+        "answer": "Every product is selected against stringent quality benchmarks covering durable construction, safe materials, functional reliability, and long-term brand-alignment. We partner only with vetted manufacturers and conscious suppliers who can demonstrate consistent batch quality, transparent sourcing, and dependable post-dispatch support."
+    },
+    {
+        "question": "How flexible is the curation model when mixing items across different gift categories?",
+        "answer": "Our curation framework is fully modular. Procurement teams can combine premium tech, wellness, stationery, lifestyle, travel, and bespoke elements to create cohesive gift boxes that reflect campaign objectives, department themes, or employee lifecycle milestones without compromising on presentation."
+    },
+    {
+        "question": "What can we expect from the unboxing experience across custom gift boxes?",
+        "answer": "We design each unboxing journey with deliberate layering, branded inserts, tissue standards, colour coordination, and protective presentation. The goal is to ensure recipients experience a premium first impression that reflects the sender's identity and the emotional intent of the occasion."
+    },
+    {
+        "question": "What are the minimum order quantities for fully bespoke gift boxes?",
+        "answer": "Bespoke configurations can generally be executed at moderate scale, with volumes driven by product sourcing lead times, custom packaging tooling, and fold-in requirements. We provide clear thresholds during scoping so teams can plan program budgets, inventory, and launch timelines with confidence."
+    },
+    {
+        "question": "How can recipient delivery schedules be managed for dispersed or hybrid teams across India?",
+        "answer": "We provide secure address-capture portals, verification workflows, scheduling windows, and coordinated dispatches. Whether gifts must arrive on the same day, staggered by region, or aligned with virtual ceremony dates, every shipment is tracked through final doorstep delivery."
+    },
+    {
+        "question": "How do you ensure that gifts remain aligned with our brand guidelines and gifting policies?",
+        "answer": "We assess tone, colour palettes, material quality, packaging preferences, compliance restrictions, and value limits before curation begins. This governance ensures every gift proposition is on-brand, policy-compliant, and commercially appropriate."
+    },
+    {
+        "question": "What personalization and branding options are available for individual gift items?",
+        "answer": "Personalization can include laser engraving, monogramming, private labelling, branded sleeves, embossed packaging, custom belly bands, and personalised note cards. Exact options vary by product category and are confirmed during pre-production review."
+    },
+    {
+        "question": "How do you protect fragile or premium items during transit and handling?",
+        "answer": "Fragile and high-value products are secured with reinforced inner sleeves, shock-absorbing inserts, tamper-resistant secondary packaging, and multi-stage quality checks. We also verify condition before dispatch to reduce transit-related disruption and replacement cycles."
+    },
+    {
+        "question": "Are gift cards and digital gifting solutions available as part of curated campaigns?",
+        "answer": "Yes, multi-brand gift cards and digital reward solutions can be incorporated into wider campaigns, hybrid programs, and urgent deployments where physical dispatch is less suitable, while still maintaining a premium experience for recipients."
+    },
+    {
+        "question": "Can multiple gift tiers be designed for different employee segments?",
+        "answer": "Yes. We regularly structure tiered gifting frameworks for cohorts based on seniority, department, location, and budget. Each tier can carry distinct products while retaining a unified design and brand language across the overall program."
+    },
+    {
+        "question": "How is current availability of artisanal or seasonal inventory managed?",
+        "answer": "Most products remain in stock throughout the year, while artisanal, limited-run, or seasonal items may fluctuate. We confirm availability, alternatives, and production timelines before approving any final gift composition to avoid fulfillment delays."
+    },
+    {
+        "question": "How do you handle client-supplied merchandise within carefully curated gift boxes?",
+        "answer": "We can integrate employer-branded merchandise, letters, printed materials, and event collateral into curated boxes during the final assembly stage, ensuring secure placement, aesthetic consistency, and pristine presentation at delivery."
     }
 ];
 export const pricingFaqs: FaqItem[] = [
     {
-        question: "Are there any setup, onboarding, or hidden platform fees?",
-        answer: "No hidden fees ever. Custom curation, branded packaging, and tracked delivery are itemised up front and locked before you approve."
+        "question": "Are there any onboarding fees, platform charges, or hidden costs in pricing structures?",
+        "answer": "No. Pricing is transparent and directly tied to the products, services, packaging, and logistics agreed for each program. There are no standard onboarding, platform, or undisclosed kitting charges added separately."
     },
     {
-        question: "How does payment and billing work for custom campaigns?",
-        answer: "We support GST-compliant invoicing, flexible milestone payments for large orders, and corporate credit cards."
+        "question": "How does billing work for custom and multi-event gifting campaigns?",
+        "answer": "Clients receive detailed pre-campaign estimates followed by milestone-based billing aligned to sourcing, production, and dispatch phases. Every invoice is GST-compliant and structured to support procurement reconciliation and approval workflows."
     },
     {
-        question: "Can we mix and match tier options for different employee milestones?",
-        answer: "Yes, you can configure different reward value tiers (e.g., onboarding vs. 5-year work anniversary) within the same programme."
+        "question": "Can multiple service tiers and campaign phases be combined within a single commercial arrangement?",
+        "answer": "Yes. Organisations can combine gifting tiers across onboarding, milestones, festivals, leadership programs, and category rewards. Commercial terms can be aligned into a single master agreement or structured across distinct budget allocations as required."
     },
     {
-        question: "What happens if a recipient's delivery address changes?",
-        answer: "Our platform includes dynamic recipient address confirmation links sent prior to dispatch to prevent misdeliveries."
+        "question": "Do enterprise teams receive custom pricing or negotiated agreements?",
+        "answer": "Yes. Enterprise engagements qualify for tailored commercial proposals based on volume, frequency, service scope, and distribution complexity. Multi-cycle partnerships typically receive custom commercial terms reflecting operational efficiency and procurement requirements."
     },
     {
-        question: "Do you offer discounts or volume pricing for bulk festive orders?",
-        answer: "Yes, scaled pricing kicks in automatically for larger orders, with special seasonal perks on orders over 50 kits."
+        "question": "How are shipping, freight, and delivery charges calculated and disclosed?",
+        "answer": "Shipping costs are determined by volumetric weight, packaging profile, declared value, and destination. Every component is shared transparently in advance so procurement teams can validate total campaign costs."
     },
     {
-        /* Terminology entry, and the one most likely to be asked for by a
-           finance counterpart rather than a buyer: "why does a light box of
-           pillows cost more to ship than a heavy one" is the exact question
-           the answer has to pre-empt. Appended after the volume-discount
-           entry so it lands immediately after "pricing scales" and explains
-           what the rate is scaling against. "3PL" is spelled out in the first
-           clause rather than assumed. */
-        question: "How are 3PL fulfillment costs and volumetric weight calculated?",
-        answer: "Fulfillment pricing combines storage, pick-and-pack labor, and shipping. Shipping costs use “volumetric weight” (the physical space a package takes up in transit relative to its actual weight), ensuring you get fair rates based on package dimension and distance."
+        "question": "Are purchase orders, advances, and milestone payments supported for enterprise purchasing?",
+        "answer": "Yes. Procurement teams can utilise purchase orders, advance payments, staged approvals, and milestone-linked releases, ensuring internal financial controls remain intact throughout commercial execution."
+    },
+    {
+        "question": "Can invoices be consolidated across departments, regions, or simultaneous dispatch programs?",
+        "answer": "Yes. Billing can be consolidated into a single enterprise invoice or segmented by department, location, campaign, and event. This flexibility supports complex reporting and cost-centre allocation requirements."
+    },
+    {
+        "question": "How are charges for custom packaging materials and premium finishes handled?",
+        "answer": "Custom packaging and premium finishes are scoped as additions and quoted transparently before approval. Standard kitting remains included, and only specialised materials or finishes attract incremental cost."
+    },
+    {
+        "question": "What replacement and credit mechanisms are available for damaged or misaddressed deliveries?",
+        "answer": "Replacement and credit remedies are defined by agreed SLA terms and supported by courier evidence, delivery records, and quality documentation. This ensures fair, auditable commercial resolution."
+    },
+    {
+        "question": "Can agreed pricing be locked across annual or multi-event gifting cycles?",
+        "answer": "Yes. Long-term contracts can include fixed pricing across approved programs, providing budget predictability, invoice consistency, and reduced renewal complexity across the year."
+    },
+    {
+        "question": "Is budget-based curation available to meet defined per-recipient spend limits?",
+        "answer": "Yes. We routinely engineer premium gifting propositions within agreed budget bands. Procurement teams can allocate target per-recipient values and receive structured options optimised for value and presentation."
+    },
+    {
+        "question": "How are GST and tax treatment managed across invoicing and shipping?",
+        "answer": "All invoices are raised in accordance with GST requirements and include applicable tax components, HSN/SAC disclosures, and valid tax documentation. Logistics-related surcharges are separated transparently to support audit and reconciliation."
+    }
+];
+
+export const aboutFaqs: FaqItem[] = [
+    {
+        "question": "What is the foundational mission and long-term vision behind Fulfill Nest?",
+        "answer": "Fulfill Nest exists to humanise corporate gifting by transforming appreciation into a meaningful cultural practice rather than an administrative task. The long-term vision is to build gifting programs that strengthen workplace belonging, recognition, and emotional connectivity at scale."
+    },
+    {
+        "question": "How do company values influence the standards of sourcing and curation?",
+        "answer": "Our values mandate precise sourcing criteria, ethical assessment, and presentation standards that prioritise quality, recipient delight, and responsible production. Every supplier relationship and product inclusion is evaluated for alignment with these principles."
+    },
+    {
+        "question": "What quality, ethical, and sourcing commitments guide vendor relationships?",
+        "answer": "Vendors are assessed for safety, durability, material integrity, consistency, and ethical conduct. Product selections must meet our quality thresholds and reflect acceptable sourcing standards, ensuring brand consistency and recipient confidence."
+    },
+    {
+        "question": "What sustainability and environmental commitments shape your operational practices?",
+        "answer": "Sustainability is addressed through responsible packaging choices, waste reduction, recycling-preferred materials, and long-term reduction of single-use components. We collaborate with partners that support environmentally aware production wherever possible without compromising presentation."
+    },
+    {
+        "question": "What expertise and experience define the Fulfill Nest team?",
+        "answer": "The team combines expertise in sourcing, product quality assessment, packaging, logistics, and employee experience design, enabling us to deliver sophisticated gifting programs across multiple industries and enterprise scales."
+    },
+    {
+        "question": "What does a long-term strategic partnership with Fulfill Nest entail?",
+        "answer": "Partnerships are governed by collaborative planning, dedicated account support, volume consideration, scheduled program reviews, and proactive recommendations. The objective is to evolve gifting strategy as the organisation grows and recognition goals change."
+    },
+    {
+        "question": "What makes Fulfill Nest materially different from conventional gifting vendors?",
+        "answer": "We integrate design-led curation with operational reliability. Rather than treating gifting as a transactional event, we deliver a coordinated experience covering sourcing, packaging, distribution, tracking, reporting, and support through a single accountable relationship."
+    },
+    {
+        "question": "What types of organisations and industries are best suited to this model?",
+        "answer": "We serve fast-growing startups, mid-market organisations, and enterprises across sectors including technology, financial services, consulting, retail, and manufacturing. The common requirement is a commitment to intentional employee and partner recognition."
+    },
+    {
+        "question": "How are corporate gifting experiences made personal rather than generic?",
+        "answer": "Programs are developed from organisational identity, occasion context, recipient cohorts, and communication style. We combine these inputs with curation expertise, personalisation choices, custom packaging, and controlled execution for a distinctive brand experience."
+    },
+    {
+        "question": "What values guide operational execution and customer engagement?",
+        "answer": "Intentionality, craftsmanship, transparency, care, and accountability guide all operational decisions. These principles are embedded into assembly, documentation, communication, packaging, logistics, and post-fulfilment review."
+    },
+    {
+        "question": "How are recurring large-scale programs delivered without reducing quality?",
+        "answer": "Scalable programs rely on inventory governance, standardised workflows, in-house assembly, batch tracking, predefined quality checkpoints, and periodic replenishment analysis to preserve quality across high volumes."
+    },
+    {
+        "question": "What is your long-term mission and how is it measured?",
+        "answer": "Our mission is to strengthen workplace culture through meaningful appreciation. Effectiveness is measured through program consistency, recipient feedback, relationship continuity, and the ability of gifting to support recognition objectives at enterprise scale."
     }
 ];

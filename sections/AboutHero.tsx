@@ -173,7 +173,7 @@ export function AboutHero() {
       ]}
       visual={
         <HeroPhotoFrame
-          src="/about-hero.jpg"
+          src="/images/heroes/about-hero.png"
           alt="A Fulfill Nest curator carefully finishing a corporate gift box"
           preload
           /* Same hover zoom as the /gifts hero (1.05, 500ms ease-out, clipped

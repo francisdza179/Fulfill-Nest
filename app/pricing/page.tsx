@@ -3,6 +3,7 @@ import { Navigation } from "@/sections/Navigation";
 import { PricingHero } from "@/sections/PricingHero";
 import { PricingCalculator } from "@/sections/PricingCalculator";
 import { PricingTiers } from "@/sections/PricingTiers";
+import { EditorialStatement } from "@/sections/EditorialStatement";
 import { PricingFaq } from "@/sections/PricingFaq";
 import { TrustBand } from "@/sections/TrustBand";
 import { Testimonials } from "@/sections/Testimonials";
@@ -45,6 +46,12 @@ export default function PricingPage() {
         <PricingHero />
         <PricingCalculator />
         <PricingTiers />
+        <EditorialStatement>
+          Clear, predictable pricing your procurement team can{" "}
+          <em className="font-medium italic" style={{ color: "var(--color-brick-red, #a83b24)" }}>
+            trust.
+          </em>
+        </EditorialStatement>
         <TrustBand />
         <Testimonials />
         <PricingFaq />

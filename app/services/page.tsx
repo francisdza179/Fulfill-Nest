@@ -222,8 +222,25 @@ export default function ServicesPage() {
           ]}
         />
 
-        <section className="bg-canvas py-section">
+        <section className="bg-white py-section">
           <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-16">
+              <SectionHeading
+                eyebrow="END-TO-END CAPABILITIES"
+                title={
+                  <>
+                    Complete corporate gifting &{" "}
+                    <em
+                      className="font-medium italic"
+                      style={{ color: "var(--color-brick-red, #a83b24)" }}
+                    >
+                      logistics
+                    </em>
+                  </>
+                }
+                description="From strategic curation and custom branding to secure warehousing and pan-India delivery, we handle every detail so you can focus on building meaningful connections."
+              />
+            </div>
             <div className="flex flex-col gap-20 md:gap-28">
               {capabilities.map((capability, index) => {
                 const reversed = index % 2 === 1;
@@ -244,10 +261,13 @@ export default function ServicesPage() {
                     </div>
 
                     <div>
-                      <h2 className="text-display text-charcoal">
+                      <h2 className="text-2xl md:text-3xl text-charcoal">
+                        <span className="mr-2 text-brand-green-700 font-bold">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
                         {capability.title.split(" ").slice(0, -1).join(" ")}{" "}
                         <em
-                          className="italic"
+                          className="font-medium italic"
                           style={{ color: "var(--color-brick-red, #a83b24)" }}
                         >
                           {capability.title.split(" ").slice(-1)[0]}

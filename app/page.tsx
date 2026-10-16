@@ -3,7 +3,6 @@ import { Navigation } from "@/sections/Navigation";
 import { HeroFlanked as Hero } from "@/sections/hero/HeroFlanked";
 import { WhoWeAre } from "@/sections/WhoWeAre";
 import { ServicesWeOffer } from "@/sections/ServicesWeOffer";
-import { EditorialStatement } from "@/sections/EditorialStatement";
 import { ProductMarquee } from "@/sections/ProductMarquee";
 import { ValueProps } from "@/sections/ValueProps";
 import { ProductShowcase } from "@/sections/ProductShowcase";
@@ -92,10 +91,6 @@ export default function HomePage() {
         <Hero />
         <WhoWeAre />
         <ProductMarquee />
-        {/* Standout editorial transition statement between the marquee and the
-            "Services we offer" grid. Centered display type on a cream band with
-            a generous vertical rhythm so it reads as a pause, not a hero. */}
-        <EditorialStatement />
         <ServicesWeOffer />
         {/* `layout="editorial"` and `headerAlign="center"`.
 
